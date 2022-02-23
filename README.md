@@ -2,7 +2,8 @@
 
 # Volume estimation
 
-(credit revathyramanan and Ishan Rai)
+(credit [revathyramanan](https://github.com/revathyramanan) and
+[Ishan Rai](https://github.com/ishanrai05))
 
 ### Steps to run the app
 
