@@ -1,0 +1,227 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Food Detection API",
+        "version": "0.1",
+        "contact": {
+            "email": ""
+        }
+    },
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
+    "paths": {
+        "/api1": {
+            "post": {
+                "tags": [
+                    "Post Request"
+                ],
+                "summary": "create bounding boxes around food image",
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/API1Schema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "bad request"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/download/{filename}": {
+            "get": {
+                "tags": [
+                    "segmented image"
+                ],
+                "summary": "download image with boudning boxes",
+                "parameters": [{
+                    "name": "filename",
+                    "in": "path",
+                    "required": "true",
+                    "type": "string",
+                    "example": "07714a7d4a324b3885409f142f3da7c2_segment.jpg"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/api2": {
+            "post": {
+                "tags": [
+                    "Post Request"
+                ],
+                "summary": "get carbohydrate content",
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/API2Schema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "bad request"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/api3": {
+            "post": {
+                "tags": [
+                    "Post Request"
+                ],
+                "summary": "get carbohydrate content without camera",
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/API3Schema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "bad request"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        }
+    },
+    
+    "components": {
+        "schemas": {
+            "API1Schema": {
+                "type": "object",
+                "properties": {
+                    "food": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type":"string"
+                        },
+                        "example": {
+                            "rice":-1, 
+                            "potato":-1, 
+                            "fish":-1,
+                            "mozzarella sticks":4
+                        }
+                    },
+                    "top_view_path": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "top_view_url": {
+                        "type": "string"
+                    },
+                    "side_view_path": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "side_view_url": {
+                        "type": "string"
+                    }
+                }
+            },
+            "API2Schema": {
+                "type": "object",
+                "properties": {
+                    "foodColorMap": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type":"string"
+                        },
+                        "example": {
+                            "rice":"blue", 
+                            "potato":"green", 
+                            "fish":"pink",
+                            "mozzarella sticks":"white"
+                        }
+                    },
+                    "colorVolumeMap": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type":"string"
+                        },
+                        "example": {
+                            "red": 140.41,
+                            "blue": 72.75,
+                            "green": 213.51,
+                            "white": 134.34
+                        }
+                    }
+                }
+            },
+            "API3Schema": {
+                "type": "object",
+                "properties": {
+                    "foodWithQuantity": {
+                        "type": "array",
+                        "items": {
+                            "type":"string"
+                        },
+                        "example": ["1 cup of wild rice", "1 cup of carrots", "3 mozzarella sticks"]
+                    },
+                    "packagedFood": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type":"string"
+                        },
+                        "example": {
+                            "Doritos": 300
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

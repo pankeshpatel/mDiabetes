@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:5.0.2
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    ports:
+      - "27017:27017"
+    volumes:
+      - md-server-volume:/data/db
+  app:
+    depends_on:
+      - mongodb
+    build: ./app
+    restart: unless-stopped
+    ports:
+      - "8008:8008"
+    environment:
+      - DB_HOST=mongodb
+      - DB_USER=root
+      - DB_PASSWORD=123456
+      - DB_NAME=md-server-db
+      - DB_PORT=27017
+    stdin_open: true
+    tty: true
+
+volumes:
+  md-server-volume:

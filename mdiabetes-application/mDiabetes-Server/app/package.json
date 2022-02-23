@@ -1,0 +1,17 @@
+{
+  "name": "mdiabetes-server",
+  "version": "1.0.0",
+  "description": "mDiabetes backend for data management and authentication",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "AIISC",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.1.0"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "react-native-month-year-picker",
+  "version": "1.8.0",
+  "summary": "React Native Month Picker component for iOS & Android",
+  "description": "react-native-month-year-picker",
+  "homepage": "https://github.com/gusparis/react-native-month-year-picker",
+  "license": "MIT",
+  "authors": {
+    "Gustavo Paris": "gustavodanteparis@gmail..com"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/gusparis/react-native-month-year-picker.git",
+    "tag": "1.8.0"
+  },
+  "source_files": "ios/**/*.{h,m,swift}",
+  "requires_arc": true,
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

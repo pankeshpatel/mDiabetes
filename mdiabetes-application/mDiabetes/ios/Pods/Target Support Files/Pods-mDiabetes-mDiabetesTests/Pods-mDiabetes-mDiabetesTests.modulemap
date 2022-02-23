@@ -1,0 +1,6 @@
+module Pods_mDiabetes_mDiabetesTests {
+  umbrella header "Pods-mDiabetes-mDiabetesTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
