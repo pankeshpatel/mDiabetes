@@ -1,5 +1,29 @@
 # mDiabetes App
 
+1. Running React Native Frontend
+
+```
+npm install
+npx react-native run-ios
+npx react-native run-android
+```
+
+2. Running backend
+
+```
+docker-compose up
+docker ps
+docker exec -it <CONTAINER ID> mongo -u root -p 123456
+```
+
+3. create a admin user
+
+```
+POST
+http://localhost:8008/user-create
+{ "username" : "admin", "password": "admin"}
+```
+
 # Volume estimation
 
 ### (Credit [revathyramanan](https://github.com/revathyramanan) and [Ishan Rai](https://github.com/ishanrai05))
