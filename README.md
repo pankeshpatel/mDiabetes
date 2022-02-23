@@ -16,7 +16,7 @@ docker ps
 docker exec -it <CONTAINER ID> mongo -u root -p 123456
 ```
 
-3. create a admin user
+3. Create a admin user
 
 ```
 POST
