@@ -6,8 +6,8 @@ import BackgroundImg from "../assets/green-background.jpg"
 import DayView from '../components/DayView';
 import SelectDropdown from 'react-native-select-dropdown';
 
-export const VOLUME_ESTIMATION_SERVER = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/"
-
+import { BASE_VOLUME_ESTIMATION_SERVER } from "@env"
+export const VOLUME_ESTIMATION_SERVER=`${BASE_VOLUME_ESTIMATION_SERVER}`
 
 // NONE AT BOTTOM OF LIST - BACKEND
 export default function ColorMap({ route, navigation }) {
@@ -26,8 +26,6 @@ export default function ColorMap({ route, navigation }) {
   
         //let url = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/api2";
         let header = { "Content-Type" : "multipart/form-data"};
-
-
         fetch(VOLUME_ESTIMATION_SERVER + "api2", { method:'POST', header : header, body : body})
         .then((res) => res.json())
         .then((res) => { 

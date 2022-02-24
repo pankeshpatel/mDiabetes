@@ -7,15 +7,13 @@ import { TextInput, Button, Text, RadioButton, Title, Subheading, IconButton, Ch
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RNFS from 'react-native-fs';
 import axios from 'axios';
+import { BASE_VOLUME_ESTIMATION_SERVER } from "@env"
 
-//export const VOLUME_ESTIMATION_SERVER_API1 = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/api1"
-export const VOLUME_ESTIMATION_SERVER  = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/"
-
+export const VOLUME_ESTIMATION_SERVER=`${BASE_VOLUME_ESTIMATION_SERVER}`
 
 export default function LogFood({ route, navigation }) {
 
 	const nav = useNavigation()
-
 	// const [image, setImage] = React.useState(null)
 	const [topView, setTopView] = React.useState(null)
 	const [sideView, setSideView] = React.useState(null)
@@ -147,8 +145,8 @@ export default function LogFood({ route, navigation }) {
 
           
 
-			fetch(`http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/download/${JSON.stringify(res.download)}`)
-			//fetch(`VOLUME_ESTIMATION_SERVER + "download/" + ${JSON.stringify(res.download)}`)
+			//fetch(`http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/download/${JSON.stringify(res.download)}`)
+			fetch(`${VOLUME_ESTIMATION_SERVER}` + "download/" + `${JSON.stringify(res.download)}`)
 			.then((res) => res)
 			.then((res) => { 
 			  

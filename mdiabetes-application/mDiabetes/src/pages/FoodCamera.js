@@ -4,12 +4,13 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native"
 import { RNCamera } from "react-native-camera"
 import { useCamera } from "react-native-camera-hooks"
 import { launchImageLibrary } from "react-native-image-picker"
-
-
+import { CALORIE_MAMA_FOOD_API_KEY } from "@env"
 import RNFS from 'react-native-fs';
 
 const RECOGNITION = (key) => `https://api-2445582032290.production.gw.apicast.io/v1/foodrecognition?user_key=${key}`
-const API_KEY = "b996bb01dcdde1ccdf9122cb268433d1" // user_key
+export const API_KEY=`${CALORIE_MAMA_FOOD_API_KEY}`
+
+//const API_KEY = "b996bb01dcdde1ccdf9122cb268433d1" // user_key
 
 const ENDPOINT = RECOGNITION(API_KEY)
 

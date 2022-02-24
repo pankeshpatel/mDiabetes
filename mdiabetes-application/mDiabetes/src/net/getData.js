@@ -1,4 +1,10 @@
-export const SERVER_LOCATION = "http://ec2-54-89-144-199.compute-1.amazonaws.com:8008/"
+//export const SERVER_LOCATION = "http://ec2-54-89-144-199.compute-1.amazonaws.com:8008/"
+
+
+import { BASE_SERVER_LOCATION } from "@env"
+
+export const SERVER_LOCATION=`${BASE_SERVER_LOCATION}`
+
 
 
 export function getData(path, authData) {
