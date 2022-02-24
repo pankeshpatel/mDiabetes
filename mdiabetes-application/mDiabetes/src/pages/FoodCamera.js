@@ -10,7 +10,6 @@ import RNFS from 'react-native-fs';
 const RECOGNITION = (key) => `https://api-2445582032290.production.gw.apicast.io/v1/foodrecognition?user_key=${key}`
 export const API_KEY=`${CALORIE_MAMA_FOOD_API_KEY}`
 
-//const API_KEY = "b996bb01dcdde1ccdf9122cb268433d1" // user_key
 
 const ENDPOINT = RECOGNITION(API_KEY)
 
