@@ -6,37 +6,29 @@ import BackgroundImg from "../assets/green-background.jpg"
 import DayView from '../components/DayView';
 import SelectDropdown from 'react-native-select-dropdown';
 
+export const VOLUME_ESTIMATION_SERVER = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/"
+
+
 // NONE AT BOTTOM OF LIST - BACKEND
 export default function ColorMap({ route, navigation }) {
 
-
     console.log("params",route.params)
-
     let colors = route.params.colors;
 	let  foodItems = route.params.foodItems;
-
     let colorIndex = {};
-
     let foodCarbMap={};
-
-
-
     console.log("routes",route.params.image)
-
-
     const handleSumbit = ()=>{
-
         console.log("submitted")
-
         let body = new FormData();
         body.append("foodColorMap",JSON.stringify(colorIndex))
         body.append("colorVolumeMap",JSON.stringify(colors))
   
-        let url = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/api2";
+        //let url = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/api2";
         let header = { "Content-Type" : "multipart/form-data"};
 
 
-        fetch(url, { method:'POST', header : header, body : body})
+        fetch(VOLUME_ESTIMATION_SERVER + "api2", { method:'POST', header : header, body : body})
         .then((res) => res.json())
         .then((res) => { 
           console.log("res2",res.foodCarbMap)

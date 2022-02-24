@@ -8,6 +8,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import RNFS from 'react-native-fs';
 import axios from 'axios';
 
+//export const VOLUME_ESTIMATION_SERVER_API1 = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/api1"
+export const VOLUME_ESTIMATION_SERVER  = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/"
+
+
 export default function LogFood({ route, navigation }) {
 
 	const nav = useNavigation()
@@ -122,7 +126,7 @@ export default function LogFood({ route, navigation }) {
 		//console.log("BDATA", formdata)
 		console.log("TV: ", topView)
 		console.log("BODY:::" , body)
-		let url = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/api1";
+		//let url = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/api1";
 		// axios.post("http://192.168.0.11:8080/api1", body, header)
 		// 	 .then((res) => {
 		// 		console.log("RES:  ", res)
@@ -131,7 +135,7 @@ export default function LogFood({ route, navigation }) {
 		// 		 console.log("ERROR:  ", error)
 		// 	 })
 
-		fetch(url, {method:'POST', header:{
+		fetch(VOLUME_ESTIMATION_SERVER + "api1", {method:'POST', header:{
 			"Content-Type" : "multipart/form-data" }, body : body
 		})
 		.then((res) => res.json())
@@ -144,6 +148,7 @@ export default function LogFood({ route, navigation }) {
           
 
 			fetch(`http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/download/${JSON.stringify(res.download)}`)
+			//fetch(`VOLUME_ESTIMATION_SERVER + "download/" + ${JSON.stringify(res.download)}`)
 			.then((res) => res)
 			.then((res) => { 
 			  
