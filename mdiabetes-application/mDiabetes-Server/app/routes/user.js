@@ -95,7 +95,7 @@ module.exports = (app) => {
 		// 	return
 		// }
 
-		/*
+		
 
 		let initialData = req.query
 
@@ -125,7 +125,7 @@ module.exports = (app) => {
 
 		res.send({ success: true })
 
-		*/
+		
 	})
 	app.get("/patient-delete", async (req, res) => {
 		if(!validateUserQuery(req)) {
