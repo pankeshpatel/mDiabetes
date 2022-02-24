@@ -24,7 +24,6 @@ export default function ColorMap({ route, navigation }) {
         body.append("foodColorMap",JSON.stringify(colorIndex))
         body.append("colorVolumeMap",JSON.stringify(colors))
   
-        //let url = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/api2";
         let header = { "Content-Type" : "multipart/form-data"};
         fetch(VOLUME_ESTIMATION_SERVER + "api2", { method:'POST', header : header, body : body})
         .then((res) => res.json())

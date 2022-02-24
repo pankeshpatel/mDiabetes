@@ -124,7 +124,6 @@ export default function LogFood({ route, navigation }) {
 		//console.log("BDATA", formdata)
 		console.log("TV: ", topView)
 		console.log("BODY:::" , body)
-		//let url = "http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/api1";
 		// axios.post("http://192.168.0.11:8080/api1", body, header)
 		// 	 .then((res) => {
 		// 		console.log("RES:  ", res)
@@ -145,7 +144,6 @@ export default function LogFood({ route, navigation }) {
 
           
 
-			//fetch(`http://ec2-54-89-144-199.compute-1.amazonaws.com:4000/download/${JSON.stringify(res.download)}`)
 			fetch(`${VOLUME_ESTIMATION_SERVER}` + "download/" + `${JSON.stringify(res.download)}`)
 			.then((res) => res)
 			.then((res) => { 
