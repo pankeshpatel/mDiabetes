@@ -47,7 +47,11 @@ export default function History() {
 					</View>
 					<View style={styles.mealLeft}>
 						<Text style={styles.mealType}>{formatType(meal)}</Text>
+						{console.log("Data Showed",recentLogs[meal])}
 						{recentLogs[meal] && recentLogs[meal].name && <Text numberOfLines={1} style={styles.mealName}>{recentLogs[meal].name}</Text>}
+
+						{/* {recentLogs[meal] && recentLogs[meal].name && <Text numberOfLines={1} style={styles.mealName}>{recentLogs[meal].carbs}</Text>} */}
+						{/* {recentLogs[meal] && recentLogs[meal].name && <Text numberOfLines={1} style={styles.mealName}>{recentLogs[meal].carbs}</Text>} */}
 					</View>
 					<View style={styles.mealRight}>
 						{alarms[meal] ? (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 // import { View, Image, Text, Pressable } from 'react-native';
 import { Button, IconButton } from "react-native-paper"
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -10,24 +10,76 @@ import {  ScrollView, StatusBar, Pressable, StyleSheet, Text, Image,  useColorSc
 import { RadioButton } from 'react-native-paper';
 import { Keyframe } from 'react-native-reanimated';
 
-
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getData } from '../net/getData';
 
 
 
 export default function VolumeEstimation({ route, navigation }) {
+
+    const esc = encodeURIComponent
+
     console.log("routes",route.params.foodCarbMap)
     const [value, onChangeText] = React.useState('Useless Placeholder');
 
     let foodCarbMap = route.params.foodCarbMap;
 
+    const [checked, setChecked] = React.useState('');
+
+    const RadioCheckAppEstimate = (text) => {
+        if (checked != 'first'){
+            setChecked(text)
+        }
+        else {
+            setChecked('')
+        }
+    }
+
+    const RadioCheckUserEstimate = (text) => {
+        if (checked != 'second'){
+            setChecked(text)
+        }
+        else {
+            setChecked('')
+        }
+    }
 
 
-    const handleSumbit = ()=>{
+    const handleSumbit = async () => {
 
         console.log("submitted")
+        try {
+            const value = await AsyncStorage.getItem('mealtype');
+            const patientID = await AsyncStorage.getItem('localPatientID');
+            const mealname = await AsyncStorage.getItem('mealname');
+            const carbs = Object.values(foodCarbMap).reduce((partialSum, a) => partialSum + a, 0);
+            console.log(value, patientID,mealname, carbs)
+            const response = await (await getData(`patient-newlog?patientID=${esc(patientID)}&mealType=${esc(value)}&name=${esc(carbs)}&carbs=${esc(carbs)}`)).json();
+            
+            navigation.navigate("Welcome")
 
+            if (value !== null) {
+            // We have data!!
+            console.log("VE HANDLE SUBMIT: ", response);
+            }
+        } catch (error) {
+            // Error retrieving data
+        }
+    }
+
+    useEffect(() => {
+        importData()
+    })
+
+    importData = async () => {
+        try {
+          const keys = await AsyncStorage.getAllKeys();
+          const result = await AsyncStorage.multiGet(keys);
+         console.log("KEYS: ", result)
+          return result.map(req => JSON.parse(req)).forEach(console.log);
+        } catch (error) {
+          console.error(error)
+        }
     }
 
 
@@ -81,36 +133,38 @@ export default function VolumeEstimation({ route, navigation }) {
 
             <Text  style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:52}}>Do you want to use app calculated estimation or your estimation?</Text>
             
-            <View  style={{display:"flex" ,flexDirection:"row"}}>
-                <RadioButton
-                    value="first"
-                    status={'unchecked'}
-                    // onPress={() => setChecked('first')}
-                />
+            <RadioButton.Group>
+                <View  style={{display:"flex" ,flexDirection:"row"}}>
+                    <RadioButton.Item
+                        mode="android"
+                        value="first"
+                        status={ checked === 'first' ? 'checked' : 'unchecked' }
+                        onPress={() => RadioCheckAppEstimate('first')}
+                    />
 
-                <Text style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:12, marginLeft:10}}>App calculated estimation</Text> 
+                    <Text style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:12, marginLeft:10}}>App calculated estimation</Text> 
+                </View>
+
+                <View  style={{display:"flex" ,flexDirection:"row"}}>
+                    <RadioButton.Item
+                        mode="android"
+                        value="second"
+                        status={ checked === 'second' ? 'checked' : 'unchecked' }
+                        onPress={() => RadioCheckUserEstimate('second')}
+                    />
+
+                    <Text style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:12, marginLeft:10}} >My own estimation</Text> 
+                </View>
+            </RadioButton.Group>
+
+           
+            
+            
+
+
             </View>
 
-
-
-
-
-
-
-            <View  style={{display:"flex" ,flexDirection:"row"}}>
-                <RadioButton
-                    value="first"
-                    status={value === 'first' ? 'checked' : 'unchecked'}
-                    // onPress={() => setChecked('first')}
-                />
-
-                <Text style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:12, marginLeft:10}} >My own estimation</Text> 
-            </View>
-
-
-            </View>
-
-                <Pressable style={{backgroundColor:"lightgrey",color:"white",width:100 ,height:30,marginLeft:220,marginTop:40,padding:1,borderWidth:1}}>
+                <Pressable style={{backgroundColor:"lightgrey",color:"white",width:100 ,height:30,marginLeft:220,marginTop:40,padding:1,borderWidth:1}} onPress={handleSumbit}>
                     <Text style={{color:"black",marginLeft:25,marginTop:5}}>Submit</Text>
                 </Pressable>
 

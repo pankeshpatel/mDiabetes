@@ -7,6 +7,10 @@ import { TextInput, Button, Text, RadioButton, Title, Subheading, IconButton, Ch
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RNFS from 'react-native-fs';
 import axios from 'axios';
+
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { BASE_VOLUME_ESTIMATION_SERVER } from "@env"
 
 export const VOLUME_ESTIMATION_SERVER=`${BASE_VOLUME_ESTIMATION_SERVER}`
@@ -14,6 +18,7 @@ export const VOLUME_ESTIMATION_SERVER=`${BASE_VOLUME_ESTIMATION_SERVER}`
 export default function LogFood({ route, navigation }) {
 
 	const nav = useNavigation()
+
 	// const [image, setImage] = React.useState(null)
 	const [topView, setTopView] = React.useState(null)
 	const [sideView, setSideView] = React.useState(null)
@@ -32,7 +37,7 @@ export default function LogFood({ route, navigation }) {
 
 	const [step, setStep] = useState("camera")
 
-
+	console.log("PARAMS ", route.params.type)
 
 	useEffect(() => {
         // console.log({ p: route.params })
@@ -79,9 +84,22 @@ export default function LogFood({ route, navigation }) {
 	// } : {
 	// 	// ?
 	// })
-	const submit = () => {
 
-	console.log("values",values["based-on-count"])
+
+	const submit = async () => {
+
+		// console.log("values",values["based-on-count"])
+		console.log("values",values)
+
+		try {
+		await AsyncStorage.setItem(
+			'mealname',
+			values["coin"]
+		);
+		} catch (error) {
+		// Error saving data
+	}
+
 
 	let food ={};
 
@@ -124,6 +142,7 @@ export default function LogFood({ route, navigation }) {
 		//console.log("BDATA", formdata)
 		console.log("TV: ", topView)
 		console.log("BODY:::" , body)
+		//let url = "http://localhost:8080/api1";
 		// axios.post("http://192.168.0.11:8080/api1", body, header)
 		// 	 .then((res) => {
 		// 		console.log("RES:  ", res)
@@ -132,9 +151,13 @@ export default function LogFood({ route, navigation }) {
 		// 		 console.log("ERROR:  ", error)
 		// 	 })
 
+		// fetch(url, {method:'POST', header:{
+		// 	"Content-Type" : "multipart/form-data" }, body : body
+		// })
 		fetch(VOLUME_ESTIMATION_SERVER + "api1", {method:'POST', header:{
 			"Content-Type" : "multipart/form-data" }, body : body
 		})
+
 		.then((res) => res.json())
 		.then((res) => {
 			console.log('response', JSON.stringify(res))
@@ -144,6 +167,7 @@ export default function LogFood({ route, navigation }) {
 
           
 
+			//fetch(`http://localhost:8080/download/${JSON.stringify(res.download)}`)
 			fetch(`${VOLUME_ESTIMATION_SERVER}` + "download/" + `${JSON.stringify(res.download)}`)
 			.then((res) => res)
 			.then((res) => { 

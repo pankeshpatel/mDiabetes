@@ -5,6 +5,7 @@ import { RNCamera } from 'react-native-camera';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TextInput, Button, Text, RadioButton, Title, Subheading, IconButton } from "react-native-paper"
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LogFoodIntro({ route, navigation }) {
 
@@ -16,6 +17,18 @@ export default function LogFoodIntro({ route, navigation }) {
 	const openWithoutCamera = () => {navigation.navigate("LogFood", { type: values["type"] })}
 
 	const submitDisabled = !values["type"]
+
+	const handleUseCamera = async () => {
+		try {
+		await AsyncStorage.setItem(
+			'mealtype',
+			values["type"]
+		);
+		} catch (error) {
+		// Error saving data
+		}
+		navigation.navigate("LogFood", { type: values["type"] })
+	}
 
 	return (
 		<>
@@ -34,7 +47,7 @@ export default function LogFoodIntro({ route, navigation }) {
 				</Button> */}
 				<Text></Text>
 				<Text></Text>
-				<Button mode="contained" onPress={() => {navigation.navigate("LogFood", { type: values["type"] })}} disabled={submitDisabled}>
+				<Button mode="contained" onPress={handleUseCamera} disabled={submitDisabled}>
 					Use Camera
 				</Button>
 				<Text></Text>

@@ -14,17 +14,25 @@ module.exports = (app) => {
 		}
 	})
 	app.get("/patient-newlog", async (req, res) => {
+		// const log = new FoodLog({
+		// 	patientID: req.query.patientID,
+		// 	timestamp: Date.now(),
+		// 	mealType: req.query.mealType,
+		// 	name: req.query.name,
+		// 	volume: req.query.volume,
+		// 	carbs: req.query.carbs,
+		// 	protein: req.query.protein,
+		// 	calories: req.query.calories,
+		// 	fat: req.query.fat,
+		// })
+
 		const log = new FoodLog({
-			patientID: req.query.patientID,
-			timestamp: Date.now(),
-			mealType: req.query.mealType,
-			name: req.query.name,
-			volume: req.query.volume,
-			carbs: req.query.carbs,
-			protein: req.query.protein,
-			calories: req.query.calories,
-			fat: req.query.fat,
-		})
+            patientID: req.query.patientID,
+            mealType: req.query.mealType,
+            name: req.query.name,
+            carbs : req.query.carbs
+        })
+		console.log("LOGGED")
 
 		let error = false
 
