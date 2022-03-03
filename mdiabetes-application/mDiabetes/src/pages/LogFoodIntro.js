@@ -50,6 +50,13 @@ export default function LogFoodIntro({ route, navigation }) {
 				<Button mode="contained" onPress={handleUseCamera} disabled={submitDisabled}>
 					Use Camera
 				</Button>
+
+				<Text></Text>
+
+				<Button mode="contained" onPress={()=>{ navigation.navigate("WithOutCamera")}} >
+					Without Camera
+				</Button>
+
 				<Text></Text>
 				<Text></Text>
 				<Text></Text>

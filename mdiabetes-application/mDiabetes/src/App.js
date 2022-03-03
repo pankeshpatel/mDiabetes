@@ -16,6 +16,7 @@ import FoodCamera from './pages/FoodCamera';
 import LogFoodIntro from './pages/LogFoodIntro';
 import ColorMap from './pages/ColorMap';
 import VolumeEstimation from './pages/VolumeEstimation';
+import WithOutCamera from './pages/WithoutCamera';
 
 
 const Stack = createNativeStackNavigator();
@@ -37,8 +38,7 @@ function App() {
 				<Stack.Screen name="History" component={History} options={{ animation: "slide_from_right", headerTitle: "History and Alarms" }} />
 				<Stack.Screen name="ColorMap" component={ColorMap} options={{ animation: "slide_from_right", headerTitle: "Colour Map" }} />
 				<Stack.Screen name="VolumeEstimation" component={VolumeEstimation} options={{ animation: "slide_from_right", headerTitle: "Volume Estimation" }} />
-
-
+				<Stack.Screen name="WithOutCamera" component={WithOutCamera} options={{ animation: "slide_from_right", headerTitle: "WithOutCamera" }} />
 
 			</Stack.Navigator>
 		</NavigationContainer>
