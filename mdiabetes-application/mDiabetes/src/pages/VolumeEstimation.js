@@ -76,9 +76,8 @@ export default function VolumeEstimation({ route, navigation }) {
           const keys = await AsyncStorage.getAllKeys();
           const result = await AsyncStorage.multiGet(keys);
          console.log("KEYS: ", result)
-          //return result.map(req => JSON.parse(req)).forEach(console.log);
-	return result.map(req => req).forEach(console.log);
-
+    	return result.map(req => req).forEach(console.log);  
+  
         } catch (error) {
           console.error(error)
         }
