@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 // import { View, Image, Text, Pressable } from 'react-native';
 import { Button, IconButton } from "react-native-paper"
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -19,30 +19,41 @@ export default function VolumeEstimation({ route, navigation }) {
 
     const esc = encodeURIComponent
 
-    console.log("routes",route.params.foodCarbMap)
-    const [value, onChangeText] = React.useState('Useless Placeholder');
 
     let foodCarbMap = route.params.foodCarbMap;
 
-    const [checked, setChecked] = React.useState('');
+    const [arr,setArr] = useState(new Array(Object.keys(foodCarbMap).length).fill(0))
 
-    const RadioCheckAppEstimate = (text) => {
-        if (checked != 'first'){
-            setChecked(text)
-        }
-        else {
-            setChecked('')
-        }
+
+    const [checked, setChecked] = React.useState('first');
+
+    const RadioCheckEstimate = (text) => {
+        // if (checked != 'first'){
+        //     setChecked(text)
+        // }
+        // else {
+        //     setChecked('')
+        // }
+
+        setChecked(text)
     }
 
-    const RadioCheckUserEstimate = (text) => {
-        if (checked != 'second'){
-            setChecked(text)
-        }
-        else {
-            setChecked('')
-        }
-    }
+ 
+
+    const handleEstimate = (val,index)=>{
+
+        setArr(arr.map((v,i)=>{
+              if(index==i){
+                  // console.log("v",v,val,index)
+                  v=Number(val)
+                  return v
+              }
+              else {
+                  return v
+              }
+          }))
+      }
+  
 
 
     const handleSumbit = async () => {
@@ -53,7 +64,7 @@ export default function VolumeEstimation({ route, navigation }) {
             const patientID = await AsyncStorage.getItem('localPatientID');
             const mealname = await AsyncStorage.getItem('mealname');
             const carbs = Object.values(foodCarbMap).reduce((partialSum, a) => partialSum + a, 0);
-            console.log(value, patientID,mealname, carbs)
+            // console.log(value, patientID,mealname, carbs)
             const response = await (await getData(`patient-newlog?patientID=${esc(patientID)}&mealType=${esc(value)}&name=${esc(carbs)}&carbs=${esc(carbs)}`)).json();
             
             navigation.navigate("Welcome")
@@ -75,7 +86,7 @@ export default function VolumeEstimation({ route, navigation }) {
         try {
           const keys = await AsyncStorage.getAllKeys();
           const result = await AsyncStorage.multiGet(keys);
-         console.log("KEYS: ", result)
+        //  console.log("KEYS: ", result)
     	return result.map(req => req).forEach(console.log);  
   
         } catch (error) {
@@ -95,29 +106,32 @@ export default function VolumeEstimation({ route, navigation }) {
 
             <View>
 
-                <Row style={{ height: 40 }}>
+                <Row style={{ height: 50 }}>
                     <Col><Text style ={styles.cell}></Text></Col>
                     <Col><Text style ={styles.cell}>App Estimate</Text></Col>
                     <Col><Text style ={styles.cell}>Your Estimate</Text></Col>
                     </Row>
                     {
 
-                        Object.entries(foodCarbMap).map(([key, value])=>{
+                        Object.entries(foodCarbMap).map(([key, value],index)=>{
 
                             console.log("key",key,value)
 
                             return(
-                                <Row style={{ height: 40 }}>
+                                <Row style={{ height: 50 }}>
                                     <Col><Text style ={styles.cell, {textAlign:'center', flex:1, flexWrap: 'wrap', borderColor:"#000000", borderWidth: 1}}>{key}</Text></Col>
                                     <Col><Text style ={styles.cell}>{value}</Text></Col>
-                                    <TextInput style ={{ height:40, flex:0.99, color:"#000", borderWidth:1, textAlign:"center"}} keyboardType='numeric' onChangeText={text => onChangeText(text)} value={value}  />
+                                    <TextInput style ={{ height:50, flex:0.91,color:"#000",borderWidth:1,textAlign:"center"}} 
+                                    value={arr[index]}
+                                    onChangeText={(estimate)=>{handleEstimate(estimate,index)}}
+                                    keyboardType='numeric'    />
                                 </Row>
                             )
 
                         }) 
 
                     }
-                <Row style={{ height: 40 }}>
+                <Row style={{ height: 50 }}>
                     <Col>
                         <Text style ={styles.cell}>Total</Text>
                     </Col>
@@ -125,7 +139,7 @@ export default function VolumeEstimation({ route, navigation }) {
                         <Text style ={styles.cell}>{Object.values(foodCarbMap).reduce((partialSum, a) => partialSum + a, 0)}
                         </Text>
                     </Col>
-                    <Col><Text style ={styles.cell}></Text></Col>
+                    <Col><Text style ={styles.cell}>{arr.reduce((partialSum, a) => partialSum + a, 0)}</Text></Col>
                 </Row>
             </View>
 
@@ -140,7 +154,7 @@ export default function VolumeEstimation({ route, navigation }) {
                         mode="android"
                         value="first"
                         status={ checked === 'first' ? 'checked' : 'unchecked' }
-                        onPress={() => RadioCheckAppEstimate('first')}
+                        onPress={() => RadioCheckEstimate('first')}
                     />
 
                     <Text style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:12, marginLeft:10}}>App calculated estimation</Text> 
@@ -151,7 +165,7 @@ export default function VolumeEstimation({ route, navigation }) {
                         mode="android"
                         value="second"
                         status={ checked === 'second' ? 'checked' : 'unchecked' }
-                        onPress={() => RadioCheckUserEstimate('second')}
+                        onPress={() => RadioCheckEstimate('second')}
                     />
 
                     <Text style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:12, marginLeft:10}} >My own estimation</Text> 
@@ -252,7 +266,7 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         color:"#000",
-        height:40,
+        height:50,
         textAlign:"center",
         paddingTop:10
         
