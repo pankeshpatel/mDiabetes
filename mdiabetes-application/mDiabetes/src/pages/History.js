@@ -61,7 +61,9 @@ export default function History() {
 						)}
 						{recentLogs[meal] && recentLogs[meal].logged && (
 							<View style={styles.timestampWrapper}>
-								<Text style={styles.timestamp}>last logged {DateTime.local().minus(Date.now() - recentLogs[meal].logged).toRelative()}</Text>
+								{/* <Text style={styles.timestamp}>last logged {DateTime.local().minus(Date.now() - recentLogs[meal].logged).toRelative()}</Text> */}
+								<Text style={styles.timestamp}>last logged  {Date(recentLogs[meal].logged).slice(0,24)}</Text>
+
 							</View>
 						)}
 					</View>
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
 	},
 	meal: {
 		backgroundColor: colors.background,
-		height: 80,
+		height: 90,
 		borderRadius: 5,
 		marginBottom: 15,
 		flex: 1,
