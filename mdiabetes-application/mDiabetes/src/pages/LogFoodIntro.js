@@ -30,6 +30,21 @@ export default function LogFoodIntro({ route, navigation }) {
 		navigation.navigate("LogFood", { type: values["type"] })
 	}
 
+
+	const handleWithoutCamera = async () => {
+		try {
+		await AsyncStorage.setItem(
+			'mealtype',
+			values["type"]
+		);
+		} catch (error) {
+		// Error saving data
+		}
+		navigation.navigate("WithOutCamera")
+	}
+
+
+
 	return (
 		<>
 			<ScrollView style={styles.root}>
@@ -53,7 +68,7 @@ export default function LogFoodIntro({ route, navigation }) {
 
 				<Text></Text>
 
-				<Button mode="contained" onPress={()=>{ navigation.navigate("WithOutCamera")}} >
+				<Button mode="contained" onPress={handleWithoutCamera} disabled={submitDisabled}>
 					Without Camera
 				</Button>
 

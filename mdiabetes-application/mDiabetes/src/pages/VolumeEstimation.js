@@ -28,12 +28,6 @@ export default function VolumeEstimation({ route, navigation }) {
     const [checked, setChecked] = React.useState('first');
 
     const RadioCheckEstimate = (text) => {
-        // if (checked != 'first'){
-        //     setChecked(text)
-        // }
-        // else {
-        //     setChecked('')
-        // }
 
         setChecked(text)
     }
@@ -63,8 +57,10 @@ export default function VolumeEstimation({ route, navigation }) {
             const value = await AsyncStorage.getItem('mealtype');
             const patientID = await AsyncStorage.getItem('localPatientID');
             const mealname = await AsyncStorage.getItem('mealname');
-            const carbs = Object.values(foodCarbMap).reduce((partialSum, a) => partialSum + a, 0);
-            // console.log(value, patientID,mealname, carbs)
+           
+            const carbs = checked== 'first' ? Object.values(foodCarbMap).reduce((partialSum, a) => partialSum + a, 0) :  arr.reduce((partialSum, a) => partialSum + a, 0)
+            console.log(value, patientID,mealname, carbs)
+
             const response = await (await getData(`patient-newlog?patientID=${esc(patientID)}&mealType=${esc(value)}&name=${esc(carbs)}&carbs=${esc(carbs)}`)).json();
             
             navigation.navigate("Welcome")
