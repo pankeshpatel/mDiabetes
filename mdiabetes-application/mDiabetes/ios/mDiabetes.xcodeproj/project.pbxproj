@@ -104,7 +104,6 @@
 				75EE2BA177491831EEDA9C38 /* Pods-mDiabetes-mDiabetesTests.debug.xcconfig */,
 				0544EAD910424B31082A3DA6 /* Pods-mDiabetes-mDiabetesTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -485,6 +484,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YVFSHF3444;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = mDiabetes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -511,6 +511,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YVFSHF3444;
 				INFOPLIST_FILE = mDiabetes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
