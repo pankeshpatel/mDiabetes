@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native"
 import { RNCamera } from "react-native-camera"
 import { useCamera } from "react-native-camera-hooks"
-import { launchImageLibrary } from "react-native-image-picker"
+import { launchImageLibrary,launchCamera  } from "react-native-image-picker"
 import { CALORIE_MAMA_FOOD_API_KEY } from "@env"
 import RNFS from 'react-native-fs';
 
@@ -91,7 +91,7 @@ const FoodCamera = ({ route }) => {
 
 
 		try {
-			launchImageLibrary({ noData: true, mediaType: "photo", maxWidth: "544px", maxHeight: "544px" }, async (response) => {
+			launchCamera({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
 				console.log({ response })
 				if(response.assets.length === 0) return
 
