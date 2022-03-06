@@ -94,6 +94,8 @@ export default function VolumeEstimation({ route, navigation }) {
 
 	return (
 		<SafeAreaView style={styles.root}>	
+		<ScrollView keyboardShouldPersistTaps='handled' contentContainerStyle={{flexGrow: 1}}>
+        
         	<View style={styles.header}>
                 <Text style={{color:"#000",marginBottom:20,textAlign:"center",fontSize:20 ,marginTop:15,fontWeight:"600"}}>Carbohydrate estimation comparison</Text>
 
@@ -168,18 +170,15 @@ export default function VolumeEstimation({ route, navigation }) {
                 </View>
             </RadioButton.Group>
 
-           
-            
             
 
 
             </View>
-
                 <Pressable style={{backgroundColor:"lightgrey",color:"white",width:100 ,height:30,marginLeft:220,marginTop:40,padding:1,borderWidth:1}} onPress={handleSumbit}>
                     <Text style={{color:"black",marginLeft:25,marginTop:5}}>Submit</Text>
                 </Pressable>
-
 			</View>
+            </ScrollView>
 		</SafeAreaView>
 	);
 }

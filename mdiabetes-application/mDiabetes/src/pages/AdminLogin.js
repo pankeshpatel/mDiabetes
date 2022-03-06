@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, View,ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TextInput, Button, Text } from "react-native-paper"
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -42,30 +42,32 @@ export default function AdminLogin({ navigation }) {
 
 	return (
 		<SafeAreaView style={styles.root}>
-			<Text style={styles.title}>Admin Login</Text>
-			<TextInput
-				style={styles.input}
-				autoCorrect={false}
-				autoCapitalize="none"
-				autoFocus
-				label="Username"
-				value={username}
-				onChangeText={setUsername}
-			/>
-			<TextInput
-				style={styles.input}
-				label="Password"
-				value={password}
-				onChangeText={setPassword}
-				secureTextEntry
-			/>
-			<Button mode="contained" onPress={submit} disabled={submitDisabled}>
-				SUBMIT
-			</Button>
-			<View style={{ flex: 1 }} />
-			<TouchableOpacity onPress={() => navigation.navigate("PatientLogin")}>
-				<Text style={styles.link}>Tap Here for Patient Login</Text>
-			</TouchableOpacity>
+			<ScrollView keyboardShouldPersistTaps='handled' contentContainerStyle={{flexGrow: 1}}>
+				<Text style={styles.title}>Admin Login</Text>
+				<TextInput
+					style={styles.input}
+					autoCorrect={false}
+					autoCapitalize="none"
+					autoFocus
+					label="Username"
+					value={username}
+					onChangeText={setUsername}
+				/>
+				<TextInput
+					style={styles.input}
+					label="Password"
+					value={password}
+					onChangeText={setPassword}
+					secureTextEntry
+				/>
+				<Button mode="contained" onPress={submit} disabled={submitDisabled}>
+					SUBMIT
+				</Button>
+				<View style={{ flex: 1 }} />
+				<TouchableOpacity onPress={() => navigation.navigate("PatientLogin")}>
+					<Text style={styles.link}>Tap Here for Patient Login</Text>
+				</TouchableOpacity>
+			</ScrollView>
 		</SafeAreaView>
 	);
 }
