@@ -359,6 +359,8 @@ PODS:
     - React
   - RNCAsyncStorage (1.15.17):
     - React-Core
+  - RNDeviceInfo (8.5.1):
+    - React-Core
   - RNFS (2.19.0):
     - React-Core
   - RNGestureHandler (2.1.1):
@@ -462,6 +464,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -561,6 +564,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/art"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNFS:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
@@ -625,6 +630,7 @@ SPEC CHECKSUMS:
   ReactCommon: d98c6c96b567f9b3a15f9fd4cc302c1eda8e3cf2
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
   RNCAsyncStorage: 6bd5a7ba3dde1c3facba418aa273f449bdc5437a
+  RNDeviceInfo: 8d4177859b062334835962799460528869a487fb
   RNFS: fc610f78fdf8bfc89a9e5cc2f898519f4dba1002
   RNGestureHandler: e1ad51d31a580755079d5124d3ab66f0fcaa8311
   RNReanimated: 17e828d603c7ed3c25d332c0cdbb037838dc53a9
@@ -635,4 +641,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 6e05397b17352ecc5aac0f12dbe8d8fc36b0dd64
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
