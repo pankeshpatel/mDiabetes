@@ -6,12 +6,18 @@ import { useCamera } from "react-native-camera-hooks"
 import { launchImageLibrary,launchCamera  } from "react-native-image-picker"
 import { CALORIE_MAMA_FOOD_API_KEY } from "@env"
 import RNFS from 'react-native-fs';
+import DeviceInfo from 'react-native-device-info'
+
 
 const RECOGNITION = (key) => `https://api-2445582032290.production.gw.apicast.io/v1/foodrecognition?user_key=${key}`
 export const API_KEY=`${CALORIE_MAMA_FOOD_API_KEY}`
 
 
 const ENDPOINT = RECOGNITION(API_KEY)
+const isSimulator =async ()=> {
+	return await DeviceInfo.isEmulator()
+  }
+
 
 
 // const example = {
@@ -91,7 +97,9 @@ const FoodCamera = ({ route }) => {
 
 
 		try {
-			launchCamera({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
+			isSimulator() ?
+			
+			launchImageLibrary({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
 				console.log({ response })
 				if(response.assets.length === 0) return
 
@@ -141,7 +149,62 @@ const FoodCamera = ({ route }) => {
 				// ---------------------------------------------------------------------------------------------
 
 
-			});
+			})
+			
+			:
+			
+			
+		   launchCamera({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
+				console.log({ response })
+				if(response.assets.length === 0) return
+
+
+				// ---------------------------------------------------------------------------------------------
+				//console.log("RESPONSE ASSETS URI :  ", response.assets[0]["uri"]);
+				// setPhoto(decodeURIComponent(response.assets[0]["uri"]));
+				// ---------------------------------------------------------------------------------------------
+
+
+				const apiResponse = await (await fetch(ENDPOINT, {
+					method: "POST",
+					headers: {
+						"Content-Type": "multipart/form-data"
+					},
+					body: createFormData(response.assets[0]),
+				})).json()
+				console.log({ rp: route.params })
+				navigation.navigate("LogFood", {
+					response: apiResponse.results,
+					direction: route.params.direction,
+					image: response.assets[0]
+				})
+				
+				// ---------------------------------------------------------------------------------------------
+
+				const source = { uri: data.uri }
+				setImage(source)
+				console.log("Response Data: ", response)
+
+
+
+				// const filePath = decodeURIComponent(response.assets[0]["uri"])
+				// const newFilePath = RNFS.DocumentDirectoryPath + "/mdiabetes-picture" + 12 + ".jpg"
+
+				// const objectURL = URL.createObjectURL(filePath)
+				// console.log("OBJECT URL", objectURL)
+
+				// RNFS.moveFile(filePath, newFilePath)
+				// 	.then(() => console.log("New Image File PATH: ", newFilePath))
+				// 	.catch(console.error)
+
+
+				// const filePath = decodeURIComponent(response.assets[0]["uri"])
+				// verifyImagePath(filePath, 0);
+
+				// ---------------------------------------------------------------------------------------------
+
+
+			})
 
 		} catch (e) {
 			console.error(e)
