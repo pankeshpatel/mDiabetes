@@ -13,14 +13,20 @@ export default function Intro() {
 	const navigation = useNavigation()
 
 	const [localUserType, setLocalUserType] = useAsyncStorage("localUserType")
+	const [localPatientID, setLocalPatientID] = useAsyncStorage("localPatientID")
+
 
 	useEffect(() => {
 		setLocalUserType("admin")
 		const timeout = setTimeout(() => {
 			if(localUserType === "user") {
 				navigation.navigate("Welcome")
-			} else {
-				navigation.navigate("AdminLogin")
+			}
+			else if(localPatientID != null){
+				navigation.navigate("Welcome")
+			} 
+			else {
+				navigation.navigate("PatientLogin")
 			}
 		}, 3000)
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { ScrollView, StyleSheet, View } from "react-native"
-import { IconButton, Text } from "react-native-paper"
+import { IconButton, Text,Portal,Modal ,Button } from "react-native-paper"
+
 import { DateTime } from "luxon"
 import { colors } from "../../styling/theme"
 import { getData } from "../../net/getData"
@@ -17,6 +18,15 @@ export default function PatientManagement({ }) {
 	const [patients, setPatients] = useState([ ])
 
 	const [loading, setLoading] = useState(false)
+
+	const [id,setid]= useState("");
+
+	const [visible, setVisible] = React.useState(false);
+
+	const showModal = () => setVisible(true);
+	const hideModal = () => setVisible(false);
+	const containerStyle = {backgroundColor: 'white', padding: 20};
+
 
 	const navigation = useNavigation()
 
@@ -103,17 +113,36 @@ export default function PatientManagement({ }) {
 						// console.log("TEST  :", value["_doc"].timestamp)
 
 						return (
+							<>
+
+						<Portal>
+							<Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+							<Text style={{textAlign:"center"}} >Are you sure you want to delete this patient.</Text>
+							<View>
+								{/* <br/> */}
+								<Text></Text>
+								<Button  onPress={()=>{onRemovePatient(id)}} >Yes</Button>
+								<Button onPress={hideModal}>No</Button>
+
+							</View>
+							</Modal>
+						</Portal>
+
 							<View key={value["_doc"].ID} style={styles.patient}>
 							<Text numberOfLines={1} style={styles.patientID}> {value["_doc"].ID} </Text>
 							<View style={styles.patientRight}>
 								<View style={styles.patientButtons}>
-									<IconButton style={styles.patientButton} icon="open-in-app"
+									{/* <IconButton style={styles.patientButton} icon="open-in-app"
 									 onPress={() => onOpenPatient(patients) }
 									
-									/>
+									/> */}
 
 									<IconButton style={styles.patientButton} icon="trash-can" 
-									 onPress={() => onRemovePatient(value["_doc"].ID)} 
+									 onPress={() => {
+										showModal()
+										setid(value["_doc"].ID)
+										// onRemovePatient(value["_doc"].ID)
+									}}
 									/>
 								</View>
 								<View style={styles.patientTimestampWrapper}>
@@ -121,6 +150,7 @@ export default function PatientManagement({ }) {
 								</View>
 							</View>
 						</View>
+						</>
 						)
 
 
