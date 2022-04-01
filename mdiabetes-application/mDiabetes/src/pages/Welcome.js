@@ -13,6 +13,19 @@ export default function Welcome({ navigation }) {
 	// const onOpenHistory = () => navigation.navigate("History")
 	// const onLogout = () => navigation.navigate("PatientLogin")
 
+	const handleLogout = async ()=>{
+	
+		try {
+			await AsyncStorage.removeItem(
+				'localPatientID'
+			);
+			} catch (error) {
+			// Error saving data
+			}
+			
+			navigation.navigate("PatientLogin")
+	}
+
 	return (
 		<SafeAreaView style={styles.root}>
 			<View style={styles.header}>
@@ -24,7 +37,7 @@ export default function Welcome({ navigation }) {
 					</View>
 					<View style={{ flex: 1}} />
 					<IconButton icon="history" onPress={() => {navigation.navigate("History")}} />
-					<IconButton icon="logout" onPress={() => {navigation.navigate("PatientLogin")}} />
+					<IconButton icon="logout"  onPress={handleLogout} />
 				</View>
 				{/* <Text style={styles.smallText}>Foodlogs today: 1</Text> */}
 				{/* <Text style={{
