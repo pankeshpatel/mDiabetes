@@ -69,6 +69,7 @@ export default function PatientManagement({ }) {
 		console.log("NEW PATIENTS : ", newPatients )
 		setPatients(newPatients)
 		await (await getData("patient-delete?ID=" + Id, {authToken, username})).json()
+		hideModal()
 	}
 
 	const test = () => {
