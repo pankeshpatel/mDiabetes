@@ -147,8 +147,8 @@ export default function LogFood({ route, navigation }) {
 
 		// console.log("TTVB:", JSON.stringify(topViewBinary))
 		//console.log("BDATA", formdata)
-		console.log("TV: ", topView)
-		console.log("BODY:::" , body)
+		// console.log("TV: ", topView)
+		// console.log("BODY:::" , body)
 		//let url = "http://localhost:8080/api1";
 		// axios.post("http://192.168.0.11:8080/api1", body, header)
 		// 	 .then((res) => {
@@ -184,9 +184,11 @@ export default function LogFood({ route, navigation }) {
 			  console.log(colors,foodItems,res.url)
 
 			  navigation.navigate("ColorMap", {
+				food:food,
 				colors: colors,
 				foodItems: foodItems,
-				image: (res.url).replace("%22","").slice(0,-3)
+				image: (res.url).replace("%22","").slice(0,-3),
+				volume:volume,
 			})
 			
 			  //   SetTopView(((res.url).replace("%22","").slice(0,-3)).toString()) 
