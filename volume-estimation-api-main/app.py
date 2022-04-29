@@ -27,6 +27,6 @@ logging.getLogger("__name__")
 
 if __name__ == "__main__":
     if port is None:
-        app.run(host="0.0.0.0", port=4000, debug=True)
+        app.run(host="0.0.0.0", port=8080, debug=True)
     else:
         app.run(host="0.0.0.0", port=int(port), debug=True, threaded=True)

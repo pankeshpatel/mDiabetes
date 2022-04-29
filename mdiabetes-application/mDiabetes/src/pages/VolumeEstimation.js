@@ -20,9 +20,11 @@ export default function VolumeEstimation({ route, navigation }) {
     const esc = encodeURIComponent
 
 
-    let foodCarbMap = route.params.foodCarbMap;
+    let userEstimate = route.params.userEstimate;
+    let estimateWithImage = route.params.estimateWithImage;
+    let estimateWithOutImage = route.params.estimateWithOutImage;
 
-    const [arr,setArr] = useState(new Array(Object.keys(foodCarbMap).length).fill(0))
+    // const [arr,setArr] = useState(new Array(Object.keys(foodCarbMap).length).fill(0))
 
 
     const [checked, setChecked] = React.useState('first');
@@ -34,20 +36,31 @@ export default function VolumeEstimation({ route, navigation }) {
 
  
 
-    const handleEstimate = (val,index)=>{
+    // const handleEstimate = (val,index)=>{
 
-        setArr(arr.map((v,i)=>{
-              if(index==i){
-                  // console.log("v",v,val,index)
-                  v=Number(val)
-                  return v
-              }
-              else {
-                  return v
-              }
-          }))
-      }
-  
+    //     setArr(arr.map((v,i)=>{
+    //           if(index==i){
+    //               // console.log("v",v,val,index)
+    //               v=Number(val)
+    //               return v
+    //           }
+    //           else {
+    //               return v
+    //           }
+    //       }))
+    //   }
+    
+    const getCards = (checked)=>{
+        if(checked=="first"){
+            return estimateWithImage.reduce((partialSum, a) => partialSum + Number(a.cho), 0);
+        }
+        if(checked=="second"){
+            return estimateWithOutImage.reduce((partialSum, a) => partialSum + Number(a.cho), 0)
+        }
+        if(checked=="third"){
+            return userEstimate.reduce((partialSum, a) => partialSum + Number(a.cho), 0)
+        }
+    }
 
 
     const handleSumbit = async () => {
@@ -58,9 +71,10 @@ export default function VolumeEstimation({ route, navigation }) {
             const patientID = await AsyncStorage.getItem('localPatientID');
             const mealname = await AsyncStorage.getItem('mealname');
            
-            const carbs = checked== 'first' ? Object.values(foodCarbMap).reduce((partialSum, a) => partialSum + a, 0) :  arr.reduce((partialSum, a) => partialSum + a, 0)
+            // const carbs = checked == 'first' ? Object.values(foodCarbMap).reduce((partialSum, a) => partialSum + a, 0) :  arr.reduce((partialSum, a) => partialSum + a, 0)
             console.log(value, patientID,mealname, carbs)
 
+            const carbs = getCards(checked)
             const response = await (await getData(`patient-newlog?patientID=${esc(patientID)}&mealType=${esc(value)}&name=${esc(carbs)}&carbs=${esc(carbs)}`)).json();
             
             navigation.navigate("Welcome")
@@ -92,10 +106,10 @@ export default function VolumeEstimation({ route, navigation }) {
 
 
 
-	return (
+    return (
 		<SafeAreaView style={styles.root}>	
 		<ScrollView keyboardShouldPersistTaps='handled' contentContainerStyle={{flexGrow: 1}}>
-        
+            
         	<View style={styles.header}>
                 <Text style={{color:"#000",marginBottom:20,textAlign:"center",fontSize:20 ,marginTop:15,fontWeight:"600"}}>Carbohydrate estimation comparison</Text>
 
@@ -104,26 +118,39 @@ export default function VolumeEstimation({ route, navigation }) {
 
             <View>
 
-                <Row style={{ height: 50 }}>
-                    <Col><Text style ={styles.cell}></Text></Col>
-                    <Col><Text style ={styles.cell}>App Estimate</Text></Col>
-                    <Col><Text style ={styles.cell}>Your Estimate</Text></Col>
+                <Row style={{ height: 85 }}>
+                    <Col><Text style ={styles.cell}>Food  Items</Text></Col>
+                    <Col><Text style ={styles.cell}>{'  '}App Estimate {'\n'}{' '}(With Image){' '}</Text></Col>
+                    <Col><Text style ={styles.cell}> Your Estimate  (Without Image) </Text></Col>
+                    <Col><Text style ={styles.cell}>Your {'\n'}Estimate</Text></Col>
+
+
                     </Row>
                     {
 
-                        Object.entries(foodCarbMap).map(([key, value],index)=>{
+                        userEstimate.map((val,index)=>{
 
-                            console.log("key",key,value)
+                            // console.log("key",key,value)
 
                             return(
+
                                 <Row style={{ height: 50 }}>
-                                    <Col><Text style ={styles.cell, {textAlign:'center', flex:1, flexWrap: 'wrap', borderColor:"#000000", borderWidth: 1}}>{key}</Text></Col>
-                                    <Col><Text style ={styles.cell}>{value}</Text></Col>
-                                    <TextInput style ={{ height:50, flex:0.91,color:"#000",borderWidth:1,textAlign:"center"}} 
-                                    value={arr[index]}
-                                    onChangeText={(estimate)=>{handleEstimate(estimate,index)}}
-                                    keyboardType='numeric'    />
+                                <Col><Text style ={styles.cell}>{userEstimate[index]?.item}</Text></Col>
+                                <Col><Text style ={styles.cell}>{estimateWithImage[index]?.cho}</Text></Col>
+                                <Col><Text style ={styles.cell}>{estimateWithOutImage[index]?.cho}</Text></Col>
+                                <Col><Text style ={styles.cell}>{userEstimate[index]?.cho}</Text></Col>
+
+            
                                 </Row>
+                            
+                            // <Row style={{ height: 50 }}>
+                                //     <Col><Text style ={styles.cell, {textAlign:'center', flex:1, flexWrap: 'wrap', borderColor:"#000000", borderWidth: 1} }>{key}</Text></Col>
+                                //     <Col><Text style ={styles.cell}>{value}</Text></Col>
+                                //     <TextInput style ={{ height:50, flex:0.91,color:"#000",borderWidth:1,textAlign:"center"}} 
+                                //     value={arr[index]}
+                                //     onChangeText={(estimate)=>{handleEstimate(estimate,index)}}
+                                //     keyboardType='numeric'    />
+                                // </Row>
                             )
 
                         }) 
@@ -133,18 +160,19 @@ export default function VolumeEstimation({ route, navigation }) {
                     <Col>
                         <Text style ={styles.cell}>Total</Text>
                     </Col>
-                    <Col>
-                        <Text style ={styles.cell}>{Object.values(foodCarbMap).reduce((partialSum, a) => partialSum + a, 0)}
-                        </Text>
-                    </Col>
-                    <Col><Text style ={styles.cell}>{arr.reduce((partialSum, a) => partialSum + a, 0)}</Text></Col>
+                    <Col><Text style ={styles.cell}>{estimateWithImage.reduce((partialSum, a) => partialSum + Number(a.cho), 0)}</Text></Col>
+                    <Col><Text style ={styles.cell}>{estimateWithOutImage.reduce((partialSum, a) => partialSum + Number(a.cho), 0)}</Text></Col>
+                    <Col><Text style ={styles.cell}>{userEstimate.reduce((partialSum, a) => partialSum + Number(a.cho), 0)}</Text></Col>
+
+
                 </Row>
             </View>
 
             <View>
+            
+            
 
-
-            <Text  style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:52}}>Do you want to use app calculated estimation or your estimation?</Text>
+            <Text  style={{color:"#000",marginBottom:10,textAlign:"center",marginTop:12}}>Which of the following estimates are you most likely to use?</Text>
             
             <RadioButton.Group>
                 <View  style={{display:"flex" ,flexDirection:"row"}}>
@@ -155,7 +183,7 @@ export default function VolumeEstimation({ route, navigation }) {
                         onPress={() => RadioCheckEstimate('first')}
                     />
 
-                    <Text style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:12, marginLeft:10}}>App calculated estimation</Text> 
+                    <Text style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:12, marginLeft:10}}>App calculated estimation (with image)</Text> 
                 </View>
 
                 <View  style={{display:"flex" ,flexDirection:"row"}}>
@@ -166,17 +194,32 @@ export default function VolumeEstimation({ route, navigation }) {
                         onPress={() => RadioCheckEstimate('second')}
                     />
 
+                    <Text style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:12, marginLeft:10}} >App calculated estimation (without image)</Text> 
+                </View>
+
+                <View  style={{display:"flex" ,flexDirection:"row"}}>
+                    <RadioButton.Item
+                        mode="android"
+                        value="second"
+                        status={ checked === 'third' ? 'checked' : 'unchecked' }
+                        onPress={() => RadioCheckEstimate('third')}
+                    />
+
                     <Text style={{color:"#000",marginBottom:20,textAlign:"center",marginTop:12, marginLeft:10}} >My own estimation</Text> 
                 </View>
             </RadioButton.Group>
 
+           
+            
             
 
 
             </View>
-                <Pressable style={{backgroundColor:"lightgrey",color:"white",width:100 ,height:30,marginLeft:220,marginTop:40,padding:1,borderWidth:1}} onPress={handleSumbit}>
+
+                <Pressable style={{backgroundColor:"lightgrey",color:"white",width:100 ,height:30,marginLeft:220,marginTop:0,padding:1,borderWidth:1}} onPress={handleSumbit}>
                     <Text style={{color:"black",marginLeft:25,marginTop:5}}>Submit</Text>
                 </Pressable>
+
 			</View>
             </ScrollView>
 		</SafeAreaView>
@@ -261,7 +304,8 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         color:"#000",
-        height:50,
+        height:60,
+        // width:90,
         textAlign:"center",
         paddingTop:10
         

@@ -25,9 +25,13 @@ export default function LogFood({ route, navigation }) {
 
 	const [topViewBinary, setTopViewBinary] = React.useState(null)
 	const [sideViewBinary, setSideViewBinary] = React.useState(null)
+	const [food,setFood] = useState(route.params.fooditem)
+
 
 	let colors = {};
 	let  foodItems = [];
+	let volume = {};
+
 
 
 	const [apiResponse, setApiResponse] = useState({
@@ -110,6 +114,8 @@ export default function LogFood({ route, navigation }) {
 
 	// console.log("foooooooooood",food)
 
+	let coin = values["coin"];
+
 	
 
 	
@@ -137,8 +143,9 @@ export default function LogFood({ route, navigation }) {
 		body.append('food', JSON.stringify(food))
 		body.append('top_view_path', {name:topViewBinary.fileName,type:topViewBinary.type,uri:Platform.OS === "ios" ? topViewBinary["uri"].replace("file://", "")  :  topViewBinary["uri"]})
 		body.append('side_view_path', {name:sideViewBinary.fileName,type:sideViewBinary.type,uri:Platform.OS === "ios" ? sideViewBinary["uri"].replace("file://", "")  :  sideViewBinary["uri"]})
-		
-		console.log("TTVB:", JSON.stringify(topViewBinary))
+		body.append('coin', JSON.stringify(coin))
+
+		// console.log("TTVB:", JSON.stringify(topViewBinary))
 		//console.log("BDATA", formdata)
 		console.log("TV: ", topView)
 		console.log("BODY:::" , body)

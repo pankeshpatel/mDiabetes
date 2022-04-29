@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Food Detection API",
+        "title": "Food Carbohydrate Detection API",
         "version": "0.1",
         "contact": {
             "email": ""
@@ -48,13 +48,13 @@
                 "tags": [
                     "segmented image"
                 ],
-                "summary": "download image with boudning boxes",
+                "summary": "download image with bounding boxes",
                 "parameters": [{
                     "name": "filename",
                     "in": "path",
                     "required": "true",
                     "type": "string",
-                    "example": "07714a7d4a324b3885409f142f3da7c2_segment.jpg"
+                    "example": "7df970d4cce746bdadf9c58eaf6d8fd3_segment.jpg"
                 }],
                 "responses": {
                     "200": {
@@ -145,16 +145,16 @@
                 "type": "object",
                 "properties": {
                     "food": {
-                        "type": "object",
+                        "type": "array",
                         "additionalProperties": {
                             "type":"string"
                         },
-                        "example": {
-                            "rice":-1, 
-                            "potato":-1, 
-                            "fish":-1,
-                            "mozzarella sticks":4
-                        }
+                        "example": [
+                            {"item": "rice", "quantity": "1 cup", "cho-est":"100"},
+                            {"item": "salmon", "quantity": "1", "cho-est":"20"},
+                            {"item": "potato", "quantity": "10 oz", "cho-est":"30"},
+                            {"item": "spinach", "quantity": "10 oz", "cho-est":"30"}
+                        ]
                     },
                     "top_view_path": {
                         "type": "string",
@@ -169,35 +169,51 @@
                     },
                     "side_view_url": {
                         "type": "string"
+                    },
+                    "coin": {
+                        "type": "string",
+                        "examplle": "dime"
                     }
                 }
             },
             "API2Schema": {
                 "type": "object",
                 "properties": {
-                    "foodColorMap": {
+                    "food": {
+                        "type": "array",
+                        "additionalProperties": {
+                            "type":"string"
+                        },
+                        "example": [
+                            {"item": "rice", "quantity": "1 cup", "cho-est":"100"},
+                            {"item": "salmon", "quantity": "1", "cho-est":"20"},
+                            {"item": "potato", "quantity": "10 oz", "cho-est":"30"},
+                            {"item": "spinach", "quantity": "10 oz", "cho-est":"30"}
+                        ]
+                    },
+                    "volume": {
                         "type": "object",
                         "additionalProperties": {
                             "type":"string"
                         },
-                        "example": {
-                            "rice":"blue", 
-                            "potato":"green", 
-                            "fish":"pink",
-                            "mozzarella sticks":"white"
+                        "example": 
+                            {
+                                "Blue": 50.092,
+                                "Lime": 292.926,
+                                "Red": 26.255
                         }
                     },
-                    "colorVolumeMap": {
-                        "type": "object",
+                    "bbox-matches": {
+                        "type": "array",
                         "additionalProperties": {
                             "type":"string"
                         },
-                        "example": {
-                            "red": 140.41,
-                            "blue": 72.75,
-                            "green": 213.51,
-                            "white": 134.34
-                        }
+                        "example": [
+                            {"item": ["rice"] , "color": "blue"},
+                            {"item": ["salmon"], "color": "yellow"},
+                            {"item": ["potato", "spinach"], "color": "red"}
+
+                        ]
                     }
                 }
             },

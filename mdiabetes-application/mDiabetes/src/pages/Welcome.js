@@ -51,7 +51,7 @@ export default function Welcome({ navigation }) {
 					contentStyle={styles.logButtonContent}
 					labelStyle={styles.logButtonLabel}
 				
-					onPress={() => {navigation.navigate("LogFoodIntro")}}
+					onPress={() => {navigation.navigate("LogFoodIntro2")}}
 				>
 					<Text style={styles.logButtonLabelText}>&nbsp;&nbsp;Log Food</Text>
 				</Button>

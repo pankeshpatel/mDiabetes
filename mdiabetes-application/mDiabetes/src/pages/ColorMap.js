@@ -1,4 +1,6 @@
 import React from 'react';
+import { useState, useRef, useEffect } from 'react';
+
 import { View, Image, Text, Pressable } from 'react-native';
 import { Button, IconButton } from "react-native-paper"
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -12,29 +14,67 @@ export const VOLUME_ESTIMATION_SERVER=`${BASE_VOLUME_ESTIMATION_SERVER}`
 // NONE AT BOTTOM OF LIST - BACKEND
 export default function ColorMap({ route, navigation }) {
 
-    console.log("params",route.params)
+    // console.log("params",route.params)
+
+
+	let food =  route.params.food;
     let colors = route.params.colors;
-	let  foodItems = route.params.foodItems;
-    let colorIndex = {};
+	let foodItems = route.params.foodItems;
+	let volume = route.params.volume;
+
+
+	const [colorIndex,setColorIndex] = useState([])
+
+	useEffect(() => {
+		setColorIndex(colors.map((val,ind)=>{
+			let a ={item:[],color:""};
+			val =a;
+			return val
+		}))
+	}, [])
+
+	const handleColorIndex = (item,index)=>{
+
+		setColorIndex(colorIndex.map((val,ind)=>{
+
+			if(index==ind){
+				val.item.push(item)
+				val.color = (colors[index])
+
+				return val
+			}
+			else{
+				return val
+			}
+			
+
+		}))
+		
+	}
+
     let foodCarbMap={};
-    console.log("routes",route.params.image)
+
+
+    // console.log("routes",route.params.image)
     const handleSumbit = ()=>{
-        console.log("submitted")
+        // console.log("submitted")
         let body = new FormData();
-        body.append("foodColorMap",JSON.stringify(colorIndex))
-        body.append("colorVolumeMap",JSON.stringify(colors))
+		body.append('food', JSON.stringify(food))
+        body.append('volume',JSON.stringify(volume))
+		body.append('bbox-matches',JSON.stringify(colorIndex))
   
         let header = { "Content-Type" : "multipart/form-data"};
         fetch(VOLUME_ESTIMATION_SERVER + "api2", { method:'POST', header : header, body : body})
         .then((res) => res.json())
         .then((res) => { 
-          console.log("res2",res.foodCarbMap)
-          foodCarbMap=res.foodCarbMap
-          console.log("foodCarbMab",foodCarbMap)
+            console.log("res2",res)
+
         //   setScreen2(false)
         
         navigation.navigate("VolumeEstimation", {
-            foodCarbMap: foodCarbMap,
+            userEstimate: res.choUser,
+			estimateWithImage:res.choWithImage,
+			estimateWithOutImage:res.choWithoutImage
         })
 
         } )
@@ -53,25 +93,31 @@ export default function ColorMap({ route, navigation }) {
                 <Image style={{width:300,height:300,margin:25 }} source={{ uri: route.params.image }}   />
 
 
-            {
-           Object.keys(colors).map((value)=>{
+				{
+        //    Object.keys(colors).map((value)=>{
+           (colors).map((value,i)=>{
+			
             return (
             
              <View key={Math.random(0,10000000)} style={{display:"flex" ,flexDirection:"row",marginBottom:40,justifyContent:"space-around"}}>
                 <View style={{width:180}}>
-               <Text style={styles.sectionDescription} >{value.charAt(0).toUpperCase() + value.slice(1)}</Text> 
+               {/* <Text style={styles.sectionDescription} >{value.charAt(0).toUpperCase() + value.slice(1)}</Text>  */}
+			   <Text style={styles.sectionDescription}>{value}</Text>
                </View>
               <View >
               <SelectDropdown  
+			  
               data={foodItems} 
               buttonStyle={{width:200,borderWidth:1,height:30,marginTop:15}}  
-              onSelect={(selectedItem, index) => { colorIndex[selectedItem] = value , console.log("colorindex",colorIndex) } }  
+              onSelect={(selectedItem, index) => {  handleColorIndex(selectedItem,i) } }  
+			  renderCustomizedButtonChild={(selectedItem, index) => { return( <Text style={{color:"black"}} > { colorIndex[i]?.item?.length ? colorIndex[i]?.item?.join(", ") : "please Select"   }</Text> ) } }
               renderDropdownIcon={(isOpened) => {
                 return (
                   <Image source={{ uri: "https://cdn-icons-png.flaticon.com/512/0/159.png" }} style={{width:20,height:20 }}  />
                 );
               }}
               dropdownIconPosition={"right"}
+			  multiselect
               />
               </View>
               
