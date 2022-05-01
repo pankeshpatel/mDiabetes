@@ -296,7 +296,7 @@ export default function LogFood({route, navigation}) {
           Choose the type of coin:
         </Subheading>
         <RadioButton.Group onValueChange={edit('coin')} value={values['coin']}>
-          <RadioButton.Item mode="android" label="Penny" value="penny" />
+          <RadioButton.Item mode="android" label="Cent" value="penny" />
           <RadioButton.Item mode="android" label="Nickel" value="nickel" />
           <RadioButton.Item mode="android" label="Dime" value="dime" />
           <RadioButton.Item mode="android" label="Quarter" value="quarter" />

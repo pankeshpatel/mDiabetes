@@ -135,7 +135,7 @@ export default function VolumeEstimation({route, navigation}) {
               marginTop: 15,
               fontWeight: '600',
             }}>
-            Carbohydrate estimation comparison
+            Carbohydrate estimation comparison (in gms)
           </Text>
 
           <View>
