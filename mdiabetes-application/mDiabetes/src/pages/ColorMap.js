@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
-
 import { View, Image, Text, Pressable } from 'react-native';
 import { Button, IconButton } from "react-native-paper"
 import { SafeAreaView } from 'react-native-safe-area-context'

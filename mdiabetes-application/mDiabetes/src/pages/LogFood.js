@@ -29,7 +29,7 @@ export default function LogFood({ route, navigation }) {
 
 
 	let colors = {};
-	let  foodItems = [];
+	let foodItems = [];
 	let volume = {};
 
 
@@ -104,17 +104,18 @@ export default function LogFood({ route, navigation }) {
 		// Error saving data
 	}
 
+	let coin = values["coin"];
 
-	let food ={};
+
+	// let food ={};
 
 
-	values["based-on-count"].map((val,index)=> {
-		food[val["name"]] = Number(val["value"])
-	})
+	// values["based-on-count"].map((val,index)=> {
+	// 	food[val["name"]] = Number(val["value"])
+	// })
 
 	// console.log("foooooooooood",food)
 
-	let coin = values["coin"];
 
 	
 
@@ -169,13 +170,14 @@ export default function LogFood({ route, navigation }) {
 		.then((res) => {
 			console.log('response', JSON.stringify(res))
 
-			colors = res.colors
-			foodItems = res.foodItems
+			colors = res.bboxColors
+			foodItems = res.bboxFoodItems
+			volume = res.volume
 
           
 
 			//fetch(`http://localhost:8080/download/${JSON.stringify(res.download)}`)
-			fetch(`${VOLUME_ESTIMATION_SERVER}` + "download/" + `${JSON.stringify(res.download)}`)
+			fetch(`${VOLUME_ESTIMATION_SERVER}` + "download/" + `${JSON.stringify(res.imageWithBbox)}`)
 			.then((res) => res)
 			.then((res) => { 
 			  
@@ -347,7 +349,7 @@ export default function LogFood({ route, navigation }) {
 				<Text />
 				<Text />
 				<Text />
-				<Button style={{marginTop:30}} mode="contained" onPress={() => setStep("food select")} disabled={submitDisabled}>
+				<Button style={{marginTop:30}} mode="contained" onPress={submit} disabled={submitDisabled}>
 					Next
 				</Button>
 			</ScrollView>
