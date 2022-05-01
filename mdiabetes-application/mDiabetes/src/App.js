@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from "react-native"
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {Text} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from './pages/AdminLogin';
 import Intro from './pages/Intro';
 import AdminHome from './pages/AdminHome';
@@ -17,32 +17,116 @@ import LogFoodIntro from './pages/LogFoodIntro';
 import ColorMap from './pages/ColorMap';
 import VolumeEstimation from './pages/VolumeEstimation';
 import WithOutCamera from './pages/WithoutCamera';
-
+import LogFoodIntro2 from './pages/LogFoodIntro2';
+import LogFoodNew from './pages/LogFoodNew';
+import UserCarbEstimate from './pages/UserCarbEstimate';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
-	return (
-		<NavigationContainer>
-			<Stack.Navigator>
-				<Stack.Screen name="Intro" component={Intro} options={{ headerShown: false }} />
-				<Stack.Screen name="AdminLogin" component={AdminLogin} options={{ animation: "slide_from_right", headerShown: false  }} />
-				<Stack.Screen name="PatientLogin" component={PatientLogin} options={{ animation: "slide_from_left", headerShown: false }} />
-				<Stack.Screen name="AdminHome" component={AdminHome} options={{ animation: "fade", headerShown: false  }} />
-				<Stack.Screen name="AddPatient" component={AddPatient} options={{ animation: "slide_from_right", headerTitle: "Add Patient" }} />
-				<Stack.Screen name="Welcome" component={Welcome} options={{ animation: "fade", headerShown: false }} />
-				<Stack.Screen name="LogFoodIntro" component={LogFoodIntro} options={{ animation: "fade", headerTitle: "Camera Selection" }} />
-				<Stack.Screen name="LogFood" component={LogFood} options={{ animation: "fade", headerTitle: "Log Food" }} />
-				<Stack.Screen name="FoodCamera" component={FoodCamera} options={{ animation: "fade", headerShown: false }} />
-				<Stack.Screen name="Nutrition" component={Nutrition} options={{ animation: "slide_from_right", headerTitle: "Log Food" }} />
-				<Stack.Screen name="History" component={History} options={{ animation: "slide_from_right", headerTitle: "History and Alarms" }} />
-				<Stack.Screen name="ColorMap" component={ColorMap} options={{ animation: "slide_from_right", headerTitle: "Colour Map" }} />
-				<Stack.Screen name="VolumeEstimation" component={VolumeEstimation} options={{ animation: "slide_from_right", headerTitle: "Volume Estimation" }} />
-				<Stack.Screen name="WithOutCamera" component={WithOutCamera} options={{ animation: "slide_from_right", headerTitle: "WithOutCamera" }} />
-
-			</Stack.Navigator>
-		</NavigationContainer>
-	);
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Intro"
+          component={Intro}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AdminLogin"
+          component={AdminLogin}
+          options={{animation: 'slide_from_right', headerShown: false}}
+        />
+        <Stack.Screen
+          name="PatientLogin"
+          component={PatientLogin}
+          options={{animation: 'slide_from_left', headerShown: false}}
+        />
+        <Stack.Screen
+          name="AdminHome"
+          component={AdminHome}
+          options={{animation: 'fade', headerShown: false}}
+        />
+        <Stack.Screen
+          name="AddPatient"
+          component={AddPatient}
+          options={{animation: 'slide_from_right', headerTitle: 'Add Patient'}}
+        />
+        <Stack.Screen
+          name="Welcome"
+          component={Welcome}
+          options={{animation: 'fade', headerShown: false}}
+        />
+        <Stack.Screen
+          name="LogFoodIntro"
+          component={LogFoodIntro}
+          options={{animation: 'fade', headerTitle: 'Camera Selection'}}
+        />
+        <Stack.Screen
+          name="LogFoodIntro2"
+          component={LogFoodIntro2}
+          options={{animation: 'fade', headerTitle: 'Camera Selection'}}
+        />
+        <Stack.Screen
+          name="LogFood"
+          component={LogFood}
+          options={{animation: 'fade', headerTitle: 'Log Food'}}
+        />
+        <Stack.Screen
+          name="FoodCamera"
+          component={FoodCamera}
+          options={{animation: 'fade', headerShown: false}}
+        />
+        <Stack.Screen
+          name="Nutrition"
+          component={Nutrition}
+          options={{animation: 'slide_from_right', headerTitle: 'Log Food'}}
+        />
+        <Stack.Screen
+          name="LogFoodNew"
+          component={LogFoodNew}
+          options={{animation: 'slide_from_right', headerTitle: 'Log Food New'}}
+        />
+        <Stack.Screen
+          name="UserCarbEstimate"
+          component={UserCarbEstimate}
+          options={{
+            animation: 'slide_from_right',
+            headerTitle: 'User Carbohydrate Estimate',
+          }}
+        />
+        <Stack.Screen
+          name="History"
+          component={History}
+          options={{
+            animation: 'slide_from_right',
+            headerTitle: 'History and Alarms',
+          }}
+        />
+        <Stack.Screen
+          name="ColorMap"
+          component={ColorMap}
+          options={{animation: 'slide_from_right', headerTitle: 'Colour Map'}}
+        />
+        <Stack.Screen
+          name="VolumeEstimation"
+          component={VolumeEstimation}
+          options={{
+            animation: 'slide_from_right',
+            headerTitle: 'Volume Estimation',
+          }}
+        />
+        <Stack.Screen
+          name="WithOutCamera"
+          component={WithOutCamera}
+          options={{
+            animation: 'slide_from_right',
+            headerTitle: 'WithOutCamera',
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 export default App;

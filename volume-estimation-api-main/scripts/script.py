@@ -17,10 +17,6 @@ import numpy as np
 import imutils
 import cv2
 # Function to show array of images (intermediate results)
-# fig = plt.figure(figsize=(15, 5))
-# ax = []
-# rows = 3
-# columns = 3
 
 
 def show_images(images):
@@ -28,12 +24,6 @@ def show_images(images):
     width = 512
     for i, img in enumerate(images):
         size_image = cv2.resize(img, (height, width))
-        # cv2_imshow(size_image)
-        # ax.append(fig.add_subplot(rows, columns, i+1))
-        # im = cv2.cvtColor(size_image, cv2.COLOR_BGR2RGB)
-        # plt.xticks([])
-        # plt.yticks([])
-        # plt.imshow(im)
 
 
 def get_image(path, height=512, width=512, channels=3):
@@ -106,11 +96,7 @@ def detect_roi_cnts(boxes, overlapThresh, plate_cords):
     # initialize the list of picked indexes
     pick = []
     # grab the coordinates of the bounding boxes
-    # print (boxes)
-    # (bl, br, tr, tl)
     xpl, xpr, ypb, ypt = plate_cords[0][0], plate_cords[1][0], plate_cords[1][1], plate_cords[2][1]
-    # print(boxes.shape)
-    # print(plate_cords)
     # compute the area of the bounding boxes and sort the bounding
     # boxes by the bottom-right y-coordinate of the bounding box
     # print(xpl, xpr, ypb, ypt)
@@ -125,12 +111,8 @@ def detect_roi_cnts(boxes, overlapThresh, plate_cords):
         # compute the width and height of the bounding box
         w = np.maximum(0, xx2 - xx1 + 1)
         h = np.maximum(0, yy2 - yy1 + 1)
-        # print(w,h,area)
         # compute the ratio of overlap
         overlap = (w * h) / area
-        # print("xl: {} xr: {} yb: {} yt: {}".format(xl, xr, yb, yt))
-        # print("overlap: {} w: {} h: {} area: {} xx1: {} xx2: {} yy1: {} yy2: {}".format(overlap, w, h, area, xx1, xx2, yy1, yy2))
-        # print(overlap)
         if overlap >= overlapThresh:
             pick.append(i)
     # return only the bounding boxes that were picked using the
@@ -152,10 +134,6 @@ def draw_cnt_and_mark_size(cnt, image, pixel_per_cm, pixel_per_sq_cm, box_color=
     wid = euclidean(tl, tr)/pixel_per_cm
     ht = euclidean(tr, br)/pixel_per_cm
     area = cv2.contourArea(cnt)/pixel_per_sq_cm
-    # cv2.putText(image, "{:.1f}cm".format(wid), (int(mid_pt_horizontal[0] - 5), int(mid_pt_horizontal[1] - 5)),
-    # cv2.FONT_HERSHEY_SIMPLEX, 0.5, font_color, 1)
-    # cv2.putText(image, "{:.1f}cm".format(ht), (int(mid_pt_verticle[0] + 5), int(mid_pt_verticle[1])),
-    # cv2.FONT_HERSHEY_SIMPLEX, 0.5, font_color, 1)
     cv2.putText(image, "{:.1f}sq.cm".format(area), (int(mid_pt_verticle[0]*1), int(mid_pt_horizontal[1]*1)),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, font_color, 2)
     return image
@@ -225,9 +203,7 @@ def find_size(img_path, uid):
     pick = detect_roi_cnts(boxes, 0.6, (p_bl, p_br, p_tr, p_tl))
     cnts = [cnts[idx] for idx in pick]
     boxes = [boxes[idx] for idx in pick]
-
-    boxes, pick = non_max_suppression_fast(boxes, 0.5)
-    # print(pick)
+    boxes, pick = non_max_suppression_fast(boxes, 0.6)
     cnt_modified = []
     for idx in pick:
         cnt_modified.append(cnts[idx])

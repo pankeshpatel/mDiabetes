@@ -42,7 +42,7 @@ LOG_FILE = os.path.join(os.getcwd(), "static", "logs", "logfile.log")
 
 
 def upload(request, image_name=None, image_key=None):
-    if request.files:
+    try:
         if image_key not in request.files:
             raise ValidationError(f"{image_key} paramenter missing")
         f = request.files[image_key]
@@ -53,7 +53,7 @@ def upload(request, image_name=None, image_key=None):
             image_name+".jpg"))
         f.save(filename)
         return filename
-    else:
+    except:
         raise Exception("No file uploaded")
 
 
@@ -72,6 +72,7 @@ def api1():
         uid = uuid.uuid4().hex
         data = request.form.to_dict()
         # app_schema.load(data)
+        print(data)
         result = None
         # print(data)
         top_view_path = None
@@ -81,10 +82,8 @@ def api1():
                 request, image_key="top_view_path", image_name=f"top_view_{uid}.jpg")
             if not os.path.isfile(top_view_path):
                 raise Exception("file upload not successfull")
-            result = find_size(top_view_path, uid)
         elif data['top_view_url']:
-            top_view_url = data['top_view_url']
-            result = find_size(top_view_url, uid)
+            top_view_path = data['top_view_url']
         else:
             return jsonify(error="No file url or file upload found for top view image", success=False, status_code=500)
         try:
@@ -101,11 +100,13 @@ def api1():
             pass
             # return jsonify(error="No file url or file uploaded for side view image", success=False, status_code=500)
 
-        # result = find_size(top_view_path)
-        colors, download = result
-        print(request.form.get('food'))
-        foodItems = tuple(json.loads(request.form.get('food')).keys())
-        return jsonify(colors=colors, download=download, foodItems=foodItems, success=True, status_code=200)
+        result = find_size(top_view_path, uid)
+        food = json.loads(request.form.get("food"))
+        volume = {"Blue": 50.092, "Lime": 292.926, "Red": 26.255}
+        imageWithBbox = result[-1]
+        bboxColors = list(volume.keys())
+        bboxFoodItems = [item["item"] for item in food]
+        return jsonify(food=food, volume=volume, imageWithBbox=imageWithBbox, bboxColors=bboxColors, bboxFoodItems=bboxFoodItems, success=True, status_code=200)
 
     except Exception as e:
         print("Error occured:", e)
@@ -119,7 +120,7 @@ def download(filename):
         path = filename.split('.')
         if path[-1] != 'jpg':
             raise ValidationError("Only jpg files allowed to download")
-        return send_from_directory('static', filename, as_attachment=False)
+        return send_from_directory('static', filename, as_attachment=True)
     except FileNotFoundError as e:
         print(e)
         return jsonify(success=False, status_code=500, error="file not found")
@@ -134,13 +135,24 @@ def download(filename):
 @cross_origin()
 def api2():
     try:
-        foodCarbMap = {}
-        if 'foodColorMap' not in request.form.to_dict():
-            return jsonify(success=False, status_code=500, error="foodColorMap not found in request")
-        foodColorMap = json.loads(request.form.get('foodColorMap'))
-        for food in foodColorMap:
-            foodCarbMap[food] = random.randint(100, 500)
-        return jsonify(foodCarbMap=foodCarbMap, success=True, status_code=200)
+        if 'food' not in request.form.to_dict():
+            return jsonify(success=False, status_code=500, error="food not found in request")
+        food = json.loads(request.form.get('food'))
+        choWithImage = [
+            {"item": "rice", "cho": "50"},
+            {"item": "salmon", "cho": "20"},
+            {"item": "potato", "cho": "10"},
+            {"item": "spinach", "cho": "10"}
+        ]
+        choWithoutImage = [
+            {"item": "rice", "cho": "60"},
+            {"item": "salmon", "cho": "30"},
+            {"item": "potato", "cho": "20"},
+            {"item": "spinach", "cho": "20"}
+        ]
+        choUser = [{"item": fd["item"], "cho": fd["cho-est"]} for fd in food]
+
+        return jsonify(choWithImage=choWithImage, choWithoutImage=choWithoutImage, choUser=choUser, success=True, status_code=200)
     except Exception as e:
         print(e)
         return jsonify(error="Error occured", success=False, status_code=500)
