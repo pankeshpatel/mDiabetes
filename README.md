@@ -32,7 +32,7 @@ use md-server-db;
 show collections;
 ```
 
-5. Database access
+5. MongoDB Database access
 
 ```
 This collecton would list ALL food log records, including the old records about the patient, that has been deleted by admin.
