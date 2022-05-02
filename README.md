@@ -30,28 +30,21 @@ http://localhost:8008/user-create
 show databases;
 use md-server-db;
 show collections;
+```
 
 5. Database access
 
-
 ```
-
 This collecton would list ALL food log records, including the old records about the patient, that has been deleted by admin.
 db.foodlogs.find().pretty();
-
 ```
 
-
-
 ```
-
 This collection would list ONLY currently active patients for study.
 db.patients.find().pretty();
-
 ```
 
 ```
-
 This collection list admin login information.
 db.users.find().pretty();
 
@@ -109,4 +102,7 @@ docker run --name food-detection-app -p 8080:8080 food-detection-app
 ```
 
 The `Swagger UI` can be accessed at `http://localhost:8080`
+
+```
+
 ```
