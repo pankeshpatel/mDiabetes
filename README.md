@@ -62,7 +62,7 @@ docker build --tag food-detection-app .
 2. Start the container
 
 ```
-docker run --name food-detection-app -p 4000:4000 food-detection-app
+docker run --name food-detection-app -p 8080:8080 food-detection-app
 ```
 
 The `Swagger UI` can be accessed at `http://localhost:8080`
