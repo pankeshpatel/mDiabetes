@@ -28,7 +28,16 @@ export default function LogFoodNew({route, navigation}) {
     SetFoodEntry([...foodEntry, a]);
   };
 
-  const quantity = ['cup', 'slice', 'count', 'oz'];
+  const quantity = [
+    'cup',
+    'slice',
+    'count',
+    'oz',
+    'Gram',
+    'Tsp',
+    'Tbsp',
+    'Fluid oz',
+  ];
 
   const handleUpdate = (type, editvalue, i) => {
     // console.log("ty",type,value,i)
