@@ -14,6 +14,9 @@ npx react-native run-android
 docker-compose up
 docker ps
 docker exec -it <CONTAINER ID> mongo -u root -p 123456
+docker exec -it <CONTAINER ID> mongosh -u root -p 123456 // to access the mongoshell
+
+
 ```
 
 3. Create a admin user
@@ -48,6 +51,23 @@ db.patients.find().pretty();
 This collection list admin login information.
 db.users.find().pretty();
 
+```
+
+6. export data from mongodb
+
+```
+sudo docker exec -i <mongodb-containerid> mongoexport --username root --password 123456 --authenticationDatabase=admin --db md-server-db --collection foodlogs > foodlogs.csv
+
+```
+
+```
+sudo docker exec -i 994c6241ae5a mongoexport --username root --password 123456 --authenticationDatabase=admin
+ --db md-server-db --collection foodlogs --fields "patientID","mealType"  > foodlogs.txt
+```
+
+```
+ sudo docker exec -i 994c6241ae5a mongoexport --username root --password 123456 --authenticationDatabase=admin
+ --db md-server-db --collection foodlogs --type=csv --fields "patientID","mealType","carbs","timestamp"  > foodlogs.csv
 ```
 
 # Volume estimation
