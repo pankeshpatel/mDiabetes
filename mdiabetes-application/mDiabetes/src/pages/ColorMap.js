@@ -57,7 +57,7 @@ export default function ColorMap({route, navigation}) {
     body.append('bbox-matches', JSON.stringify(colorIndex));
 
     let header = {'Content-Type': 'multipart/form-data'};
-    fetch(VOLUME_ESTIMATION_SERVER + 'api2', {
+    fetch("http://192.168.1.6:8080/" + 'api2', {
       method: 'POST',
       header: header,
       body: body,

@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import React, { useState } from "react"
+import React, { useState,useEffect } from "react"
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native"
 import { RNCamera } from "react-native-camera"
 import { useCamera } from "react-native-camera-hooks"
@@ -7,14 +7,18 @@ import { launchImageLibrary,launchCamera  } from "react-native-image-picker"
 import { CALORIE_MAMA_FOOD_API_KEY } from "@env"
 import RNFS from 'react-native-fs';
 import DeviceInfo from 'react-native-device-info'
+import { withRepeat } from "react-native-reanimated"
 
 
 const RECOGNITION = (key) => `https://api-2445582032290.production.gw.apicast.io/v1/foodrecognition?user_key=${key}`
 export const API_KEY=`${CALORIE_MAMA_FOOD_API_KEY}`
 
 
+
 const ENDPOINT = RECOGNITION(API_KEY)
 const isSimulator =async ()=> {
+	// alert(await DeviceInfo.isEmulator())
+	console.log("DeviceInfo.isEmulator()", await DeviceInfo.isEmulator())
 	return await DeviceInfo.isEmulator()
   }
 
@@ -81,12 +85,44 @@ const FoodCamera = ({ route }) => {
 	const [photo, setPhoto] = React.useState(null);
 	const [image, setImage] = React.useState(null);
 
+	
+	useEffect( async() => {
+		
+		launchCamera({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
+			console.log({ response })
+			if(response.assets.length === 0) return
+
+			const apiResponse = await (await fetch(ENDPOINT, {
+				method: "POST",
+				headers: {
+					"Content-Type": "multipart/form-data"
+				},
+				body: createFormData(response.assets[0]),
+			})).json()
+			console.log({ rp: route.params })
+			navigation.navigate("LogFood", {
+				response: apiResponse.results,
+				direction: route.params.direction,
+				image: response.assets[0]
+			})
+			
+
+			const source = { uri: data.uri }
+			setImage(source)
+			console.log("Response Data: ", response)
+
+		})
+
+		
+
+	}, [])
+
 
 
 	const onCapture = async () => {
 		console.log("taking picture")
 		const data = await takePicture()
-		console.log({ data })
+		// console.log({ data })
 
 
 		// const filePath = data.uri
@@ -97,7 +133,7 @@ const FoodCamera = ({ route }) => {
 
 
 		try {
-			isSimulator() ?
+			!isSimulator() ?
 			
 			launchImageLibrary({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
 				console.log({ response })
@@ -222,9 +258,10 @@ const FoodCamera = ({ route }) => {
 
 			>
 				<Image source={3} />
-				<TouchableOpacity style={styles.button} onPressOut={onCapture} />
+				{/* <TouchableOpacity style={styles.button} onPressOut={onCapture} /> */}
+
 			</RNCamera>
-			{/* {image == null ? null : <Image source={image} /> } */}
+		
 			
 		</View>
 		
