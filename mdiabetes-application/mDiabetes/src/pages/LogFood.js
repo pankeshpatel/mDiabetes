@@ -178,7 +178,8 @@ export default function LogFood({route, navigation}) {
     // fetch(url, {method:'POST', header:{
     // 	"Content-Type" : "multipart/form-data" }, body : body
     // })
-    fetch(VOLUME_ESTIMATION_SERVER + 'api1', {
+    //fetch(VOLUME_ESTIMATION_SERVER + 'api1', {
+    fetch('http://ec2-54-89-144-199.compute-1.amazonaws.com:8080/api', {
       method: 'POST',
       header: {
         'Content-Type': 'multipart/form-data',
