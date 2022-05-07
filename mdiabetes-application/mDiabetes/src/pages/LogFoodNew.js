@@ -13,6 +13,10 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import SelectDropdown from 'react-native-select-dropdown';
 import {Image} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+
+
 
 import {View, ScrollView} from 'react-native';
 
@@ -87,6 +91,16 @@ export default function LogFoodNew({route, navigation}) {
     });
   };
 
+  const handleDelete =(index)=>{
+
+    SetFoodEntry(foodEntry.filter((val,ind)=>{
+      if(ind!=index){
+        return val;
+      }
+    }))
+
+  }
+
   return (
     <SafeAreaView style={styles.root}>
       <ScrollView
@@ -143,6 +157,24 @@ export default function LogFoodNew({route, navigation}) {
                   dropdownIconPosition={'right'}
                 />
               </View>
+              
+              <View>
+              <TouchableOpacity onPress={()=>{handleDelete(index)}}>
+
+              <Text></Text>
+              <Image 
+                        source={{
+                          uri: 'https://cdn-icons-png.flaticon.com/512/565/565491.png',
+                        }}
+                        style={{width: 20, height: 20,marginTop:-8}}
+                      />
+                
+              </TouchableOpacity>
+           
+
+              </View>
+            
+              
             </View>
           );
         })}

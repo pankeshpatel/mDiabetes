@@ -31,7 +31,7 @@ export default function Intro() {
 		}, 3000)
 
 		return () => clearTimeout(timeout)
-	}, [localUserType])
+	}, [localUserType,localPatientID])
 
 	return (
 		<View style={styles.root}>
