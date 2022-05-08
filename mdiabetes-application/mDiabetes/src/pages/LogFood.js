@@ -108,6 +108,7 @@ export default function LogFood({route, navigation}) {
   const submit = async () => {
     // console.log("values",values["based-on-count"])
     console.log('values', values);
+    console.log("VOLUME_ESTIMATION_SERVER",VOLUME_ESTIMATION_SERVER)
 
     try {
       await AsyncStorage.setItem('mealname', values['coin']);
@@ -178,12 +179,14 @@ export default function LogFood({route, navigation}) {
     // fetch(url, {method:'POST', header:{
     // 	"Content-Type" : "multipart/form-data" }, body : body
     // })
-    //fetch(VOLUME_ESTIMATION_SERVER + 'api1', {
-    fetch('http://ec2-54-89-144-199.compute-1.amazonaws.com:8080/api', {
+    fetch(VOLUME_ESTIMATION_SERVER + 'api1', {
+    // fetch('http://ec2-54-89-144-199.compute-1.amazonaws.com:8080/api', {
       method: 'POST',
       header: {
         'Content-Type': 'multipart/form-data',
       },
+
+
       body: body,
     })
       .then(res => res.json())

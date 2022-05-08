@@ -86,32 +86,43 @@ const FoodCamera = ({ route }) => {
 	const [image, setImage] = React.useState(null);
 
 	
-	useEffect( async() => {
-		
-		launchCamera({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
-			console.log({ response })
-			if(response.assets.length === 0) return
+	useEffect(() => {
 
-			const apiResponse = await (await fetch(ENDPOINT, {
-				method: "POST",
-				headers: {
-					"Content-Type": "multipart/form-data"
-				},
-				body: createFormData(response.assets[0]),
-			})).json()
-			console.log({ rp: route.params })
-			navigation.navigate("LogFood", {
-				response: apiResponse.results,
-				direction: route.params.direction,
-				image: response.assets[0]
+		const launch = async ()=>{
+
+			// const data = await takePicture()
+
+
+			launchCamera({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
+				console.log({ response })
+				if(response.assets.length === 0) return
+	
+				const apiResponse = await (await fetch(ENDPOINT, {
+					method: "POST",
+					headers: {
+						"Content-Type": "multipart/form-data"
+					},
+					body: createFormData(response.assets[0]),
+				})).json()
+				console.log({ rp: route.params })
+				navigation.navigate("LogFood", {
+					response: apiResponse.results,
+					direction: route.params.direction,
+					image: response.assets[0]
+				})
+				
+	
+				const source = { uri: data.uri }
+				setImage(source)
+				console.log("Response Data: ", response)
+	
 			})
-			
+	
 
-			const source = { uri: data.uri }
-			setImage(source)
-			console.log("Response Data: ", response)
+		}
 
-		})
+		launch()
+		
 
 		
 
@@ -257,8 +268,15 @@ const FoodCamera = ({ route }) => {
 				captureAudio={false}
 
 			>
-				<Image source={3} />
+				<TouchableOpacity onPressOut={()=>{navigation.navigate("LogFood",{
+					response: "",
+					direction: "",
+					image: ""
+
+				})}}>
+				<Image source={3} style={styles.button}   />
 				{/* <TouchableOpacity style={styles.button} onPressOut={onCapture} /> */}
+				</TouchableOpacity>
 
 			</RNCamera>
 		
