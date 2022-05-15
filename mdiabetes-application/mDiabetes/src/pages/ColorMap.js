@@ -50,7 +50,7 @@ export default function ColorMap({route, navigation}) {
 
   // console.log("routes",route.params.image)
   const handleSumbit = () => {
-    console.log("submitted",VOLUME_ESTIMATION_SERVER)
+    console.log('submitted', VOLUME_ESTIMATION_SERVER);
     let body = new FormData();
     body.append('food', JSON.stringify(food));
     body.append('volume', JSON.stringify(volume));
