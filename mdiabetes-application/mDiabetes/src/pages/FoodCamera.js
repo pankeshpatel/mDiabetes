@@ -8,6 +8,7 @@ import { CALORIE_MAMA_FOOD_API_KEY } from "@env"
 import RNFS from 'react-native-fs';
 import DeviceInfo from 'react-native-device-info'
 import { withRepeat } from "react-native-reanimated"
+import { Portal, Modal, Button} from 'react-native-paper';
 
 
 const RECOGNITION = (key) => `https://api-2445582032290.production.gw.apicast.io/v1/foodrecognition?user_key=${key}`
@@ -78,6 +79,13 @@ function verifyImagePath(path, count) {
 
 const FoodCamera = ({ route }) => {
 
+
+	const [visible, setVisible] = React.useState(true);
+
+	const showModal = () => setVisible(true);
+	const hideModal = () => setVisible(false);
+	const containerStyle = {backgroundColor: 'white', padding: 20};
+
 	const navigation = useNavigation()
 
 	const [{ cameraRef }, { takePicture }] = useCamera(null)
@@ -85,49 +93,171 @@ const FoodCamera = ({ route }) => {
 	const [photo, setPhoto] = React.useState(null);
 	const [image, setImage] = React.useState(null);
 
+
+	const [loading,setLoading] = useState(false)
 	
-	useEffect(() => {
+	// useEffect(() => {
 
-		const launch = async ()=>{
+	// 	const launch = async ()=>{
 
-			// const data = await takePicture()
+	// 		// const data = await takePicture()
 
 
-			launchCamera({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
-				console.log({ response })
-				if(response.assets.length === 0) return
+	// 		launchCamera({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
+	// 			console.log({ response })
+	// 			if(response.assets.length === 0) return
 	
-				const apiResponse = await (await fetch(ENDPOINT, {
-					method: "POST",
-					headers: {
-						"Content-Type": "multipart/form-data"
-					},
-					body: createFormData(response.assets[0]),
-				})).json()
-				console.log({ rp: route.params })
-				navigation.navigate("LogFood", {
-					response: apiResponse.results,
-					direction: route.params.direction,
-					image: response.assets[0]
-				})
+	// 			const apiResponse = await (await fetch(ENDPOINT, {
+	// 				method: "POST",
+	// 				headers: {
+	// 					"Content-Type": "multipart/form-data"
+	// 				},
+	// 				body: createFormData(response.assets[0]),
+	// 			})).json()
+	// 			console.log({ rp: route.params })
+	// 			navigation.navigate("LogFood", {
+	// 				response: apiResponse.results,
+	// 				direction: route.params.direction,
+	// 				image: response.assets[0]
+	// 			})
 				
 	
-				const source = { uri: data.uri }
-				setImage(source)
-				console.log("Response Data: ", response)
+	// 			const source = { uri: data.uri }
+	// 			setImage(source)
+	// 			console.log("Response Data: ", response)
 	
+	// 		})
+	
+
+	// 	}
+
+	// 	launch()
+		
+
+		
+
+	// }, [])
+
+
+	const LiveCamera = async ()=>{
+		setLoading(true)
+		launchCamera({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
+			console.log({ response })
+			if(response.assets.length === 0) return
+
+
+			// ---------------------------------------------------------------------------------------------
+			//console.log("RESPONSE ASSETS URI :  ", response.assets[0]["uri"]);
+			// setPhoto(decodeURIComponent(response.assets[0]["uri"]));
+			// ---------------------------------------------------------------------------------------------
+
+
+			// const apiResponse = await (await fetch(ENDPOINT, {
+			// 	method: "POST",
+			// 	headers: {
+			// 		"Content-Type": "multipart/form-data"
+			// 	},
+			// 	body: createFormData(response.assets[0]),
+			// })).json()
+			// console.log({ rp: route.params })
+
+			setLoading(false)
+			hideModal()
+			navigation.navigate("LogFood", {
+				response: {},
+				direction: route.params.direction,
+				image: response.assets[0]
 			})
-	
+			
+			// ---------------------------------------------------------------------------------------------
 
-		}
+			const source = { uri: data.uri }
+			setImage(source)
+			console.log("Response Data: ", response)
 
-		launch()
+
+
+			// const filePath = decodeURIComponent(response.assets[0]["uri"])
+			// const newFilePath = RNFS.DocumentDirectoryPath + "/mdiabetes-picture" + 12 + ".jpg"
+
+			// const objectURL = URL.createObjectURL(filePath)
+			// console.log("OBJECT URL", objectURL)
+
+			// RNFS.moveFile(filePath, newFilePath)
+			// 	.then(() => console.log("New Image File PATH: ", newFilePath))
+			// 	.catch(console.error)
+
+
+			// const filePath = decodeURIComponent(response.assets[0]["uri"])
+			// verifyImagePath(filePath, 0);
+
+			// ---------------------------------------------------------------------------------------------
+
+
+		})
+
 		
 
-		
+	}
 
-	}, [])
+	const FromLibrary = async ()=>{
+		setLoading(true)
+		launchImageLibrary({ noData: true, mediaType: "photo", maxWidth: 544, maxHeight: 544 }, async (response) => {
+			console.log({ response })
+			if(response.assets.length === 0) return
 
+
+			// ---------------------------------------------------------------------------------------------
+			//console.log("RESPONSE ASSETS URI :  ", response.assets[0]["uri"]);
+			// setPhoto(decodeURIComponent(response.assets[0]["uri"]));
+			// ---------------------------------------------------------------------------------------------
+
+
+			const apiResponse = await (await fetch(ENDPOINT, {
+				method: "POST",
+				headers: {
+					"Content-Type": "multipart/form-data"
+				},
+				body: createFormData(response.assets[0]),
+			})).json()
+			console.log({ rp: route.params })
+			setLoading(false)
+			hideModal()
+			navigation.navigate("LogFood", {
+				response: apiResponse.results,
+				direction: route.params.direction,
+				image: response.assets[0]
+			})
+			
+			// ---------------------------------------------------------------------------------------------
+
+			const source = { uri: data.uri }
+			setImage(source)
+			console.log("Response Data: ", response)
+
+
+
+			// const filePath = decodeURIComponent(response.assets[0]["uri"])
+			// const newFilePath = RNFS.DocumentDirectoryPath + "/mdiabetes-picture" + 12 + ".jpg"
+
+			// const objectURL = URL.createObjectURL(filePath)
+			// console.log("OBJECT URL", objectURL)
+
+			// RNFS.moveFile(filePath, newFilePath)
+			// 	.then(() => console.log("New Image File PATH: ", newFilePath))
+			// 	.catch(console.error)
+
+
+			// const filePath = decodeURIComponent(response.assets[0]["uri"])
+			// verifyImagePath(filePath, 0);
+
+			// ---------------------------------------------------------------------------------------------
+
+
+		})
+
+
+	}
 
 
 	const onCapture = async () => {
@@ -259,7 +389,32 @@ const FoodCamera = ({ route }) => {
 
 	}
 
+	if(loading){
+		return <Text>Loading...</Text>
+	}
+
 	return (
+		<>
+		<Portal>
+			<Modal
+				visible={visible}
+				onDismiss={hideModal}
+				contentContainerStyle={containerStyle}>
+				<Text style={{textAlign: 'center'}}>
+				Please Select :
+				</Text>
+				<View>
+				{/* <br/> */}
+				<Text></Text>
+				<Button
+					onPress={LiveCamera}>
+					Take Live photo
+				</Button>
+				<Button onPress={FromLibrary}>Take from Library</Button>
+				</View>
+			</Modal>
+			</Portal>
+
 		<View style={styles.body}>
 			<RNCamera
 				ref={cameraRef}
@@ -282,6 +437,8 @@ const FoodCamera = ({ route }) => {
 		
 			
 		</View>
+
+		</>
 		
 		
 	)

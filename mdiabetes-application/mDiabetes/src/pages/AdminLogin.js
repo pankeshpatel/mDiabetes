@@ -52,12 +52,14 @@ export default function AdminLogin({ navigation }) {
 					label="Username"
 					value={username}
 					onChangeText={setUsername}
+					onBlur={()=>setUsername(username.trim())}
 				/>
 				<TextInput
 					style={styles.input}
 					label="Password"
 					value={password}
 					onChangeText={setPassword}
+					onBlur={()=>{setPassword(password.trim())}}
 					secureTextEntry
 				/>
 				<Button mode="contained" onPress={submit} disabled={submitDisabled}>

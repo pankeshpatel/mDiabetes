@@ -72,15 +72,15 @@ export default function LogFood({route, navigation}) {
       // })
       //  .catch(console.error)
 
-      if (route.params.response.length > 0) {
-        const key = route.params.direction;
-        setApiResponse({
-          ...apiResponse,
-          [key]: route.params.response[0],
-        });
-      } else {
-        Alert.alert('Could not identify food.');
-      }
+      // if (route.params.response.length > 0) {
+      //   const key = route.params.direction;
+      //   setApiResponse({
+      //     ...apiResponse,
+      //     [key]: route.params.response[0],
+      //   });
+      // } else {
+      //   Alert.alert('Could not identify food.');
+      // }
     }
   }, [
     nav.getState().routes,
@@ -224,7 +224,7 @@ export default function LogFood({route, navigation}) {
   };
 
   const submitDisabled =
-    !values['coin'] || !apiResponse.top || !apiResponse.side;
+    !values['coin'] 
 
   const takePictureTop = () =>
     navigation.navigate('FoodCamera', {direction: 'top'});
