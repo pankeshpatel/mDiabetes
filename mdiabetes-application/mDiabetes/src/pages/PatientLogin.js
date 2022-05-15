@@ -46,6 +46,7 @@ export default function PatientLogin({ navigation }) {
 					label="Patient ID"
 					value={patientID}
 					onChangeText={setPatientID}
+					onBlur={()=>setPatientID(patientID.trim())}
 				/>
 				<TextInput
 					autoCapitalize="none"
@@ -53,6 +54,7 @@ export default function PatientLogin({ navigation }) {
 					label="Confirm Patient ID"
 					value={confirmID}
 					onChangeText={setConfirmID}
+					onBlur={()=>setConfirmID(confirmID.trim())}
 				/>
 				<Button mode="contained" onPress={submit} disabled={submitDisabled}>
 					SUBMIT
